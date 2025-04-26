@@ -3,7 +3,7 @@ from utils import set_background, show_title_image, get_translator, users, admin
 
 def app():
     # Setup
-    st.set_page_config(page_title="Login/Signup", layout="wide")  # Page configuration
+   # Page configuration
     set_background()  # Setting the background image
 
     # Language toggle
