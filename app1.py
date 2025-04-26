@@ -4,11 +4,12 @@ import matplotlib.pyplot as plt
 from utils import set_background, show_title_image, get_translator
 
 def app():
-    # This should be the first command
-    set_background()
+    # Setup background and language toggle
+    set_background()  # Make sure this is the first command in the app
     lang_toggle = st.sidebar.checkbox("Switch to Tamil")
     t = get_translator(lang_toggle)
 
+    # Display the title and header
     show_title_image()
     st.header(t("Real-Time Stock"))
 
@@ -19,7 +20,7 @@ def app():
         "Shop 103 - Coimbatore"
     ])
 
-    # Dummy stock data
+    # Dummy stock data (replace with actual data as needed)
     stock_data = {
         "Shop 101 - Chennai": {"Rice": 100, "Sugar": 40, "Wheat": 0},
         "Shop 102 - Madurai": {"Rice": 80, "Sugar": 75, "Wheat": 60},
@@ -42,6 +43,7 @@ def app():
         "Shop 103 - Coimbatore": "https://www.google.com/maps?q=11.0168,76.9558&z=15&output=embed",
     }
 
+    # Embed Google Map for the selected shop
     st.markdown(f"""
     <iframe width="100%" height="300" frameborder="0" style="border:0"
     src="{shop_map_urls[shop]}" allowfullscreen></iframe>
