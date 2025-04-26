@@ -26,6 +26,8 @@ def app():
         "Shop 102 - Madurai": {"Rice": 80, "Sugar": 75, "Wheat": 60},
         "Shop 103 - Coimbatore": {"Rice": 30, "Sugar": 60, "Wheat": 90},
     }
+    if __name__ == "__main__":
+    app(
 
     df = pd.DataFrame(stock_data[shop].items(), columns=["Item", "Quantity"])
 
