@@ -49,3 +49,5 @@ def app():
     <iframe width="100%" height="300" frameborder="0" style="border:0"
     src="{shop_map_urls[shop]}" allowfullscreen></iframe>
     """, unsafe_allow_html=True)
+if __name__ == "__main__":
+    app()
