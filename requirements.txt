@@ -1,4 +1,8 @@
 streamlit
 pandas
 matplotlib
-streamlit-extras
+
+streamlit
+streamlit-option-menu
+deep-translator
+Pillow
