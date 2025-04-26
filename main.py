@@ -1,6 +1,10 @@
 import streamlit as st
+from streamlit_option_menu import option_menu
 from utils import set_background, show_title_image, get_translator
-
+import app1
+import app2
+import app3
+import app4
 # === Setup ===
 st.set_page_config(page_title="Tamil Nadu Ration Shop", layout="wide")
 set_background()
@@ -24,17 +28,39 @@ if menu == "🏠 Home":
         <li>{t('- Place orders & track status')}</li>
     </ul>
     """, unsafe_allow_html=True)
+with st.sidebar:
+    selected_option = option_menu(
+        menu_title="ISA MIT Student Chapter",
+        options=[ 
+            "Stock Availability",
+            "Login / Signup",
+            "Grievance",
+            "Language",
+            "Contact"
+        ],
+        icons=[
+            "bar-chart-line", "lock", "envelope", "globe",
+        ],
+        menu_icon="gear-fill",
+        default_index=0,
+        styles={
+            "container": {"padding": "5!important", "background-color": "#1f4e79"},
+            "icon": {"color": "white", "font-size": "20px"},
+            "nav-link": {"color": "white", "font-size": "18px", "--hover-color": "#FFA500"},
+            "nav-link-selected": {"background-color": "#FFA500"},
+        }
+    )
 
 # === Redirect to other apps ===
 elif menu == "📊 Stock Availability":
-    st.switch_page("app1.py")
+    app1.app()
 
 elif menu == "🔐 Login / Signup":
-    st.switch_page("app3.py")
+    app2.app()
 
 elif menu == "📬 Grievance":
-    st.switch_page("app4.py")
+    app3.app()
 
 elif menu == "🌐 Language":
-    st.switch_page("app5.py")
+    app4.app()
 
