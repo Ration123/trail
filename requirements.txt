@@ -1,7 +1,7 @@
 streamlit
 pandas
 matplotlib
-
+bcrypt
 streamlit
 streamlit-option-menu
 deep-translator
