@@ -46,5 +46,3 @@ def app(lang_toggle):
     src="{shop_map_urls[shop]}" allowfullscreen></iframe>
     """, unsafe_allow_html=True)
 
-if __name__ == "__main__":
-    app()
