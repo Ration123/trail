@@ -1,17 +1,16 @@
 import streamlit as st
+from deep_translator import GoogleTranslator
+import bcrypt
 
-# Dummy users and admins
-users = {"user1": "pass123", "user2": "pass456"}
-admins = {"admin1": "admin123"}
+# Dummy users and admins (hashed passwords)
+users = {"user1": bcrypt.hashpw("pass123".encode('utf-8'), bcrypt.gensalt()),
+         "user2": bcrypt.hashpw("pass456".encode('utf-8'), bcrypt.gensalt())}
+admins = {"admin1": bcrypt.hashpw("admin123".encode('utf-8'), bcrypt.gensalt())}
 
 def calculate_price(quantity):
     return (quantity / 100) * 10
 
-# utils.py
-
-import streamlit as st
-from deep_translator import GoogleTranslator
-
+# Background setup
 def set_background():
     st.markdown("""
         <style>
@@ -60,7 +59,7 @@ def get_translator(lang):
             try:
                 return translator.translate(text)
             except Exception as e:
-                # In case translation fails, return English
+                st.error(f"Translation failed: {e}")
                 return text
         else:
             return text
