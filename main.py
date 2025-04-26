@@ -16,34 +16,34 @@ t = get_translator(lang_toggle)
 
 # === Sidebar Option Menu ===
 with st.sidebar:
- selected_option = option_menu(
-    menu_title="ISA MIT Student Chapter",
-    options=[
-        "🏠 Home",
-        "📊 Stock Availability",
-        "🔐 Login / Signup",
-        "📬 Grievance",
-        "🌐 Language",
-        "📞 Contact"
-    ],
-    icons=[
-        "house-door", 
-        "bar-chart-line", 
-        "lock", 
-        "envelope", 
-        "globe",
-        "telephone"
-    ],
-    menu_icon="gear-fill",
-    default_index=0,
-    orientation="vertical",   # sidebar by default vertical
-    styles={
-        "container": {"padding": "5!important", "background-color": "#1f4e79"},
-        "icon": {"color": "white", "font-size": "20px"},
-        "nav-link": {"color": "white", "font-size": "18px", "--hover-color": "#FFA500"},
-        "nav-link-selected": {"background-color": "#FFA500"},
-    }
- )
+    selected_option = option_menu(
+        menu_title="ISA MIT Student Chapter",
+        options=[
+            "🏠 Home",
+            "📊 Stock Availability",
+            "🔐 Login / Signup",
+            "📬 Grievance",
+            "🌐 Language",
+            "📞 Contact"
+        ],
+        icons=[
+            "house-door", 
+            "bar-chart-line", 
+            "lock", 
+            "envelope", 
+            "globe",
+            "telephone"
+        ],
+        menu_icon="gear-fill",
+        default_index=0,
+        orientation="vertical",   # sidebar by default vertical
+        styles={
+            "container": {"padding": "5!important", "background-color": "#1f4e79"},
+            "icon": {"color": "white", "font-size": "20px"},
+            "nav-link": {"color": "white", "font-size": "18px", "--hover-color": "#FFA500"},
+            "nav-link-selected": {"background-color": "#FFA500"},
+        }
+    )
 
 # === Main Area Routing ===
 if selected_option == "🏠 Home":
@@ -57,6 +57,7 @@ if selected_option == "🏠 Home":
         <li>{t('- Place orders & track status')}</li>
     </ul>
     """, unsafe_allow_html=True)
+
 elif selected_option == "📊 Stock Availability":
     app1.app()
 
@@ -70,6 +71,7 @@ elif selected_option == "🌐 Language":
     app4.app()
 
 elif selected_option == "📞 Contact":
+    # Contact page content
     st.markdown(f"<h2 style='color:black; font-weight:900;'>{t('Contact Us')}</h2>", unsafe_allow_html=True)
     st.markdown(f"<p style='color:black; font-weight:900; font-size:18px;'>{t('📞 Contact us at: 123-456-7890')}</p>", unsafe_allow_html=True)
     st.markdown(f"<p style='color:black; font-weight:900; font-size:18px;'>{t('📧 Email: support@example.com')}</p>", unsafe_allow_html=True)
