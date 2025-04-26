@@ -56,7 +56,6 @@ if selected_option == "🏠 Home":
         <li>{t('- Place orders & track status')}</li>
     </ul>
     """, unsafe_allow_html=True)
-
 elif selected_option == "📊 Stock Availability":
     app1.app()
 
@@ -70,4 +69,6 @@ elif selected_option == "🌐 Language":
     app4.app()
 
 elif selected_option == "📞 Contact":
-    st.write("📞 Contact us at: 123-456-7890 or email support@example.com")
+    st.markdown(f"<h2 style='color:black; font-weight:900;'>{t('Contact Us')}</h2>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color:black; font-weight:900; font-size:18px;'>{t('📞 Contact us at: 123-456-7890')}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color:black; font-weight:900; font-size:18px;'>{t('📧 Email: support@example.com')}</p>", unsafe_allow_html=True)
