@@ -43,5 +43,3 @@ def app(lang_toggle):
         else:
             st.error(t("Invalid username or password"))
 
-if __name__ == "__main__":
-    app()
