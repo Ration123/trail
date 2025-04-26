@@ -7,6 +7,11 @@ admins = {"admin1": "admin123"}
 def calculate_price(quantity):
     return (quantity / 100) * 10
 
+# utils.py
+
+import streamlit as st
+from deep_translator import GoogleTranslator
+
 def set_background():
     st.markdown("""
         <style>
@@ -48,39 +53,16 @@ def show_title_image():
     st.image("https://raw.githubusercontent.com/Ration123/RATION/main/title", use_container_width=True)
 
 def get_translator(lang):
+    translator = GoogleTranslator(source='en', target='ta') if lang else None
+
     def t(text):
-        translations = {
-            "Home": "முகப்பு",
-            "Welcome to Tamil Nadu Ration Shop Portal": "தமிழ்நாடு ரேஷன் கடை போர்டல் வரவேற்கிறது!",
-            "- Track shop stock": "- கடை பொருள் இருப்பை பின்தொடர்",
-            "- Submit complaints": "- புகார் அளிக்க",
-            "- Place orders & track status": "- ஆர்டரை இட & நிலையை பின்தொடர",
-            "Real-Time Stock": "நிகழ்நேர பொருள் நிலை",
-            "Select Shop": "கடையைத் தேர்ந்தெடுக்கவும்",
-            "Current Stock Levels": "தற்போதைய இருப்பு நிலை",
-            "Login as:": "உள்நுழைவு பயனராக:",
-            "User": "பயனர்",
-            "Admin": "நிர்வாகி",
-            "Username": "பயனர் பெயர்",
-            "Password": "கடவுச்சொல்",
-            "Login": "உள்நுழை",
-            "Welcome": "வரவேற்கின்றோம்",
-            "Card Type: APL": "அட்டை வகை: APL",
-            "🧾 Order Status: Received this month ✔️": "🧾 ஆர்டர் நிலை: இந்த மாதம் பெற்றது ✔️",
-            "🧾 Order Status: Not received this month ": "🧾 ஆர்டர் நிலை: இந்த மாதம் பெறப்படவில்லை ",
-            "💸 Pay via GPay: UPI@gov": "💸 GPay வழியாக செலுத்த: UPI@gov",
-            "Place Order": "ஆர்டர் இடு",
-            "Login Portal": "உள்நுழைவு போர்டல்",
-            "Submit Complaint or Feedback": "புகார் அல்லது கருத்தை சமர்ப்பிக்கவும்",
-            "Full Name": "முழுப் பெயர்",
-            "Contact Email / Phone": "தொடர்பு மின்னஞ்சல் / தொலைபேசி",
-            "Your Message": "உங்கள் செய்தி",
-            "Thank you! We received your feedback.": "நன்றி! உங்கள் கருத்தை பெற்றோம்.",
-            "Language Switcher": "மொழி மாற்று",
-            "Use the checkbox in the sidebar to toggle between Tamil and English.": "தமிழ் மற்றும் ஆங்கிலத்தை மாற்ற பக்கப்பட்டி பெட்டியைப் பயன்படுத்தவும்.",
-            "Enter quantity of rice (in grams)": "அரிசி அளவை உள்ளிடவும் (கிராம்களில்)",
-            "Total Amount": "மொத்த தொகை"
-            
-        }
-        return translations.get(text, text) if lang else text
+        if lang:
+            try:
+                return translator.translate(text)
+            except Exception as e:
+                # In case translation fails, return English
+                return text
+        else:
+            return text
+
     return t
