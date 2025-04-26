@@ -3,7 +3,7 @@ from utils import set_background, show_title_image, get_translator
 
 def app():
     # Setup
-    st.set_page_config(page_title="Grievance", layout="wide")
+   
     set_background()
     lang_toggle = st.sidebar.checkbox("Switch to Tamil")
     t = get_translator(lang_toggle)
