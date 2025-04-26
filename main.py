@@ -8,9 +8,10 @@ import app4
 
 # === Setup ===
 set_background()
-lang_toggle = st.sidebar.checkbox("Switch to Tamil")
-t = get_translator(lang_toggle)
 
+# Only ONE language toggle checkbox here
+lang_toggle = st.sidebar.checkbox("Switch to Tamil", key="lang_toggle_checkbox")
+t = get_translator(lang_toggle)
 
 # === Sidebar Option Menu ===
 with st.sidebar:
@@ -34,7 +35,7 @@ with st.sidebar:
         ],
         menu_icon="gear-fill",
         default_index=0,
-        orientation="vertical",   # sidebar by default vertical
+        orientation="vertical",
         styles={
             "container": {"padding": "5!important", "background-color": "#1f4e79"},
             "icon": {"color": "white", "font-size": "20px"},
@@ -57,16 +58,16 @@ if selected_option == "🏠 Home":
     """, unsafe_allow_html=True)
 
 elif selected_option == "📊 Stock Availability":
-    app1.app()
+    app1.app(lang_toggle)
 
 elif selected_option == "🔐 Login / Signup":
-    app2.app()
+    app2.app(lang_toggle)
 
 elif selected_option == "📬 Grievance":
-    app3.app()
+    app3.app(lang_toggle)
 
 elif selected_option == "🌐 Language":
-    app4.app()
+    app4.app(lang_toggle)
 
 elif selected_option == "📞 Contact":
     # Contact page content
