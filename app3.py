@@ -3,7 +3,6 @@ from utils import set_background, show_title_image, get_translator
 
 def app():
     # Setup
-   
     set_background()
     lang_toggle = st.sidebar.checkbox("Switch to Tamil")
     t = get_translator(lang_toggle)
@@ -19,6 +18,19 @@ def app():
 
     # Submit button logic
     if st.button(t("Submit")):
-        st.success(t("Thank you! We received your feedback."))
+        # Check if all required fields are filled
+        if full_name and contact_info and message:
+            # Here you can save the feedback data to a file or a database
+            # For example, saving to Google Sheets, Firebase, or a text file
+            
+            # For demonstration, we just print the submitted data
+            # In actual implementation, you'd store this in a database or file
+            st.success(t("Thank you! We received your feedback."))
+            st.write(f"Name: {full_name}")
+            st.write(f"Contact Info: {contact_info}")
+            st.write(f"Message: {message}")
+        else:
+            st.error(t("Please fill out all fields before submitting."))
+
 if __name__ == "__main__":
     app()
