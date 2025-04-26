@@ -72,5 +72,19 @@ elif selected_option == "🌐 Language":
 elif selected_option == "📞 Contact":
     # Contact page content
     st.markdown(f"<h2 style='color:black; font-weight:900;'>{t('Contact Us')}</h2>", unsafe_allow_html=True)
-    st.markdown(f"<p style='color:black; font-weight:900; font-size:18px;'>{t('📞 Contact us at: 123-456-7890')}</p>", unsafe_allow_html=True)
-    st.markdown(f"<p style='color:black; font-weight:900; font-size:18px;'>{t('📧 Email: support@example.com')}</p>", unsafe_allow_html=True)
+    
+    # Add clickable links for the phone number and email
+    contact_number = "123-456-7890"
+    email = "support@example.com"
+    
+    st.markdown(f"""
+        <p style='color:black; font-weight:900; font-size:18px;'>
+            {t('📞 Contact us at:')} <a href='tel:{contact_number}' style='color:#1f4e79;'>{contact_number}</a>
+        </p>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+        <p style='color:black; font-weight:900; font-size:18px;'>
+            {t('📧 Email:')} <a href='mailto:{email}' style='color:#1f4e79;'>{email}</a>
+        </p>
+    """, unsafe_allow_html=True)
