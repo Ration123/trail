@@ -7,9 +7,9 @@ import app3
 import app4
 
 # === Setup ===
-st.set_page_config(page_title="Tamil Nadu Ration Shop", layout="wide")
 set_background()
 
+# Sidebar title and language toggle
 st.sidebar.title("🛒 Tamil Nadu Ration Shop")
 lang_toggle = st.sidebar.checkbox("Switch to Tamil")
 t = get_translator(lang_toggle)
