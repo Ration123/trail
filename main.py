@@ -8,7 +8,8 @@ import app4
 
 # === Setup ===
 set_background()
-
+lang_toggle = st.sidebar.checkbox("Switch to Tamil", key="lang_toggle_checkbox")
+t = get_translator(lang_toggle)
 
 
 # === Sidebar Option Menu ===
