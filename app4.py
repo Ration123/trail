@@ -1,6 +1,6 @@
 import streamlit as st
 from utils import set_background, show_title_image, get_translator
-st.set_page_config(page_title="Language Settings", layout="wide")
+
 def app():
     # Setup
    
