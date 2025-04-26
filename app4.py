@@ -14,5 +14,3 @@ def app(lang_toggle):
     else:
         st.write(t("You have switched to English."))
 
-if __name__ == "__main__":
-    app()
