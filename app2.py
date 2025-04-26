@@ -5,9 +5,7 @@ import bcrypt
 def app():
     # Setup
     set_background()  # Setting the background image
-
-    # Language toggle
-    lang_toggle = st.sidebar.checkbox("Switch to Tamil", key="lang_toggle")
+    lang_toggle = st.sidebar.checkbox("Switch to Tamil", key="lang_toggle_checkbox")
     t = get_translator(lang_toggle)  # Get translator based on language toggle
 
     # Display the title image and header
