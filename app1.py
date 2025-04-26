@@ -26,8 +26,6 @@ def app():
         "Shop 102 - Madurai": {"Rice": 80, "Sugar": 75, "Wheat": 60},
         "Shop 103 - Coimbatore": {"Rice": 30, "Sugar": 60, "Wheat": 90},
     }
-    if __name__ == "__main__":
-    app(
 
     df = pd.DataFrame(stock_data[shop].items(), columns=["Item", "Quantity"])
 
@@ -49,5 +47,6 @@ def app():
     <iframe width="100%" height="300" frameborder="0" style="border:0"
     src="{shop_map_urls[shop]}" allowfullscreen></iframe>
     """, unsafe_allow_html=True)
+
 if __name__ == "__main__":
     app()
