@@ -13,3 +13,5 @@ def app():
     st.header(t("Language Switcher"))
     st.write(t("Use the checkbox in the sidebar to toggle between Tamil and English."))
 
+if __name__ == "__main__":
+    app()
