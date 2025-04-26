@@ -9,15 +9,12 @@ import app4
 # === Setup ===
 set_background()
 
-# Sidebar title and language toggle
-st.sidebar.title("🛒 Tamil Nadu Ration Shop")
-lang_toggle = st.sidebar.checkbox("Switch to Tamil")
-t = get_translator(lang_toggle)
+
 
 # === Sidebar Option Menu ===
 with st.sidebar:
     selected_option = option_menu(
-        menu_title="ISA MIT Student Chapter",
+        menu_title="🛒 Tamil Nadu Ration Shop",
         options=[
             "🏠 Home",
             "📊 Stock Availability",
