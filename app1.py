@@ -29,10 +29,19 @@ def app(lang_toggle):
         fig, ax = plt.subplots()
         ax.bar(df[t("Item")], df[t("Quantity")], color=['orange', 'green', 'blue'])
 
-        # Explicitly translating the title and labels
-        ax.set_title(t("Current Stock Levels"))  # Ensure translation is applied here
-        ax.set_ylabel(t("Quantity"))  # Ensure translation is applied here
-        ax.set_xlabel(t("Item"))  # Ensure translation is applied here if needed
+        # Debugging the translation of axis labels and title
+        translated_title = t("Current Stock Levels")
+        translated_ylabel = t("Quantity")
+        translated_xlabel = t("Item")
+
+        print(f"Translated title: {translated_title}")
+        print(f"Translated ylabel: {translated_ylabel}")
+        print(f"Translated xlabel: {translated_xlabel}")
+
+        # Apply the translated strings to the plot
+        ax.set_title(translated_title)  # Ensure translation is applied here
+        ax.set_ylabel(translated_ylabel)  # Ensure translation is applied here
+        ax.set_xlabel(translated_xlabel)  # Ensure translation is applied here if needed
 
         st.pyplot(fig)
     else:
