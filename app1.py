@@ -3,12 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from utils import set_background, show_title_image, get_translator
 
-def app():
-    # Setup background and language toggle
-    set_background()  # Make sure this is the first command in the app
-    lang_toggle = st.sidebar.checkbox("Switch to Tamil", key="lang_toggle_checkbox")
+def app(lang_toggle):
+    set_background()
     t = get_translator(lang_toggle)
-
     # Display the title and header
     show_title_image()
     st.header(t("Real-Time Stock"))
