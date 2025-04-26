@@ -15,11 +15,11 @@ def set_background():
     st.markdown("""
         <style>
         html, body, .stApp {
-            background-image: url("https://raw.githubusercontent.com/Ration123/RATION/main/GRAIN.jpg");
+            background-image: url("https://raw.githubusercontent.com/Ration123/trail/main/beautiful-view-green-fields-sunrise-captured-canggu-bali.jpg");
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: scroll;
-            background-position: center 200px;
+            background-position: center center;
             height: 100%;
             width: 100%;
         }
