@@ -2,10 +2,8 @@ import streamlit as st
 from utils import set_background, show_title_image, get_translator, users, admins, calculate_price
 import bcrypt
 
-def app():
-    # Setup
-    set_background()  # Setting the background image
-    lang_toggle = st.sidebar.checkbox("Switch to Tamil", key="lang_toggle_checkbox")
+def app(lang_toggle):
+    set_background()
     t = get_translator(lang_toggle)  # Get translator based on language toggle
 
     # Display the title image and header
