@@ -3,7 +3,6 @@ from utils import set_background, show_title_image, get_translator, users, admin
 
 def app():
     # Setup
-   # Page configuration
     set_background()  # Setting the background image
 
     # Language toggle
@@ -30,10 +29,10 @@ def app():
             # If the user role is selected
             if role == t("User"):
                 st.subheader(t("Card Type: APL"))
-                st.write(t("🧾 Order Status: Not received this month "))
+                st.write(t("🧾 Order Status: Not received this month"))
                 
                 # Order form for the user
-                with st.form("order_form", clear_on_submit=False):
+                with st.form("order_form", clear_on_submit=True):  # Added clear_on_submit=True to clear fields
                     quantity = st.number_input(t("Enter quantity of rice (in grams)"), min_value=0, step=100, key="quantity")
                     price = calculate_price(quantity)  # Calculate price based on quantity
                     st.write(f"💸 {t('Pay via GPay: UPI@gov')}")
@@ -43,6 +42,8 @@ def app():
                     submitted = st.form_submit_button(t("Place Order"))
                     if submitted:
                         st.success(f"{t('Your order has been placed successfully!')}")
+                        # Optionally, display an order summary or reset form for a new order
+
         else:
             st.error(t("Invalid username or password"))
 
