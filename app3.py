@@ -30,5 +30,4 @@ def app(lang_toggle):
         else:
             st.error(t("Please fill out all fields before submitting."))
 
-if __name__ == "__main__":
-    app()
+
