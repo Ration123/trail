@@ -4,7 +4,7 @@ from utils import set_background, show_title_image, get_translator
 def app():
     # Setup
     set_background()
-    lang_toggle = st.sidebar.checkbox("Switch to Tamil")
+    lang_toggle = st.sidebar.checkbox("Switch to Tamil", key="lang_toggle_checkbox")
     t = get_translator(lang_toggle)
 
     # Display the title image and header
