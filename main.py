@@ -15,7 +15,8 @@ lang_toggle = st.sidebar.checkbox("Switch to Tamil")
 t = get_translator(lang_toggle)
 
 # === Sidebar Option Menu ===
-selected_option = option_menu(
+with st.sidebar:
+ selected_option = option_menu(
     menu_title="ISA MIT Student Chapter",
     options=[
         "🏠 Home",
@@ -42,7 +43,7 @@ selected_option = option_menu(
         "nav-link": {"color": "white", "font-size": "18px", "--hover-color": "#FFA500"},
         "nav-link-selected": {"background-color": "#FFA500"},
     }
-)
+ )
 
 # === Main Area Routing ===
 if selected_option == "🏠 Home":
