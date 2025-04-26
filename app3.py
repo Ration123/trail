@@ -20,4 +20,5 @@ def app():
     # Submit button logic
     if st.button(t("Submit")):
         st.success(t("Thank you! We received your feedback."))
-
+if __name__ == "__main__":
+    app()
