@@ -10,9 +10,9 @@ def app(lang_toggle):
 
     # === Stock Availability Section ===
     shop = st.selectbox(t("Select Shop"), [
-        "Shop 101 - Chennai", 
-        "Shop 102 - Madurai", 
-        "Shop 103 - Coimbatore"
+        t("Shop 101 - Chennai"), 
+        t("Shop 102 - Madurai"), 
+        t("Shop 103 - Coimbatore")
     ])
 
     # Dummy stock data
@@ -22,13 +22,14 @@ def app(lang_toggle):
         "Shop 103 - Coimbatore": {"Rice": 30, "Sugar": 60, "Wheat": 90},
     }
 
-    df = pd.DataFrame(stock_data[shop].items(), columns=["Item", "Quantity"])
+    df = pd.DataFrame(stock_data[shop].items(), columns=[t("Item"), t("Quantity")])
 
     # === Bar Chart ===
     fig, ax = plt.subplots()
-    ax.bar(df["Item"], df["Quantity"], color=['orange', 'green', 'blue'])
+    ax.bar(df[t("Item")], df[t("Quantity")], color=['orange', 'green', 'blue'])
     ax.set_title(t("Current Stock Levels"))
     ax.set_ylabel(t("Quantity"))
+    ax.set_xlabel(t("Item"))
     st.pyplot(fig)
 
     # === Map Display ===
