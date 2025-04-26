@@ -45,3 +45,6 @@ def app():
                         st.success(f"{t('Your order has been placed successfully!')}")
         else:
             st.error(t("Invalid username or password"))
+
+if __name__ == "__main__":
+    app()
