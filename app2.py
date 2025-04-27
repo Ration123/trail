@@ -22,7 +22,7 @@ def app(lang_toggle):
         # Check if the credentials match for the chosen role (User/Admin)
         if role == t("User") and username in users and bcrypt.checkpw(password.encode('utf-8'), users[username]):
             st.success(f"{t('Welcome')} {username}!")  # Welcome message
-            app5.run()
+            app5.app(lang_toggle)
         elif role == t("Admin") and username in admins and bcrypt.checkpw(password.encode('utf-8'), admins[username]):
             st.success(f"{t('Welcome Admin')} {username}!")
         else:
