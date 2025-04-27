@@ -33,5 +33,14 @@ def app(lang_toggle):
         st.write(f"📌 {t('UPI ID')}: `{upi_id}`")
         st.markdown(f"[{t('Or Click to Pay')}]({upi_link})")
 
-    if st.button(t("Place Order")):
-        st.success(t("Your order has been placed successfully!"))
+        # --- Place Order Button ---
+        if st.button(t("Place Order")):
+            st.success(t("Order placed successfully!"))
+
+            # --- Ask for payment confirmation ---
+            payment_done = st.radio(t("Have you completed the payment?"), (t("Yes"), t("No")))
+
+            if payment_done == t("Yes"):
+                st.success(t("Thank you for your payment! Your order is confirmed. ✅"))
+            elif payment_done == t("No"):
+                st.warning(t("Please complete the payment to confirm your order. 🔴"))
