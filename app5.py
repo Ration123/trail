@@ -1,4 +1,6 @@
 import streamlit as st
+import qrcode
+from io import BytesIO
 from utils import get_translator, calculate_price
 
 def app(lang_toggle):
@@ -13,10 +15,23 @@ def app(lang_toggle):
         price = calculate_price(quantity)
         st.info(f"💸 {t('Total Amount')}: ₹{price:.2f}")
 
-        # Show UPI payment info
-        st.subheader(t("Pay via GPay"))
-        st.image("static/gpay_qr.png", caption=t("Scan to Pay"), width=250)  # adjust path and width
-        st.write(f"📌 {t('UPI ID')}: UPI@gov")
+        # --- Generate UPI Payment QR ---
+        upi_id = "myupiid@gov"   # Your UPI ID
+        name = "Rice Order"
+        currency = "INR"
+
+        upi_link = f"upi://pay?pa={upi_id}&pn={name}&am={price}&cu={currency}"
+
+        # Generate QR code image
+        qr = qrcode.make(upi_link)
+        buffered = BytesIO()
+        qr.save(buffered, format="PNG")
+
+        st.subheader("🧾 " + t("Scan to Pay"))
+        st.image(buffered.getvalue(), width=250)  # Show QR code
+
+        st.write(f"📌 {t('UPI ID')}: `{upi_id}`")
+        st.markdown(f"[{t('Or Click to Pay')}]({upi_link})")
 
     if st.button(t("Place Order")):
         st.success(t("Your order has been placed successfully!"))
