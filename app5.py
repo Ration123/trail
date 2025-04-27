@@ -17,7 +17,7 @@ def app(lang_toggle):
 
         # --- Generate UPI Payment QR ---
         upi_id = "myupiid@gov"   # Your UPI ID
-        name = "Rice Order"
+        name = "Order"
         currency = "INR"
 
         upi_link = f"upi://pay?pa={upi_id}&pn={name}&am={price}&cu={currency}"
