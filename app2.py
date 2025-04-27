@@ -1,7 +1,7 @@
 import streamlit as st
 from utils import set_background, show_title_image, get_translator, users, admins, calculate_price
 import bcrypt
-
+import app5
 def app(lang_toggle):
     set_background()
     t = get_translator(lang_toggle)  # Get translator based on language toggle
@@ -22,22 +22,7 @@ def app(lang_toggle):
         # Check if the credentials match for the chosen role (User/Admin)
         if role == t("User") and username in users and bcrypt.checkpw(password.encode('utf-8'), users[username]):
             st.success(f"{t('Welcome')} {username}!")  # Welcome message
-            
-            # Order form for the user
-            st.subheader(t("Card Type: APL"))
-            st.write(t("🧾 Order Status: Not received this month"))
-                
-            # Order form for the user
-            with st.form("order_form", clear_on_submit=False):
-                quantity = st.number_input(t("Enter quantity of rice (in grams)"), min_value=0, step=100, key="quantity")
-                price = calculate_price(quantity)  # Calculate price based on quantity
-                st.write(f"💸 {t('Pay via GPay: UPI@gov')}")
-                st.write(f"{t('Total Amount')}: ₹{price:.2f}")
-                    
-                # Submit order button
-                submitted = st.form_submit_button(t("Place Order"))
-                if submitted:
-                    st.success(f"{t('Your order has been placed successfully!')}")
+            app5.run()
         elif role == t("Admin") and username in admins and bcrypt.checkpw(password.encode('utf-8'), admins[username]):
             st.success(f"{t('Welcome Admin')} {username}!")
         else:
