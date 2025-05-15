@@ -30,8 +30,7 @@ def app(lang_toggle):
         st.subheader("🧾 " + t("Scan to Pay"))
         st.image(buffered.getvalue(), width=250)  # Show QR code
 
-        st.write(f"📌 {t('UPI ID')}: `{upi_id}`")
-        st.markdown(f"[{t('Or Click to Pay')}]({upi_link})")
+        
 
         # --- Place Order Button ---
         if st.button(t("Place Order")):
