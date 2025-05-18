@@ -37,7 +37,7 @@ def app(lang_toggle):
         t("Shop 102 - Madurai"), 
         t("Shop 103 - Coimbatore")
     ])
-    level=100
+    
     # Dummy stock data
     stock_data = {
         t("Shop 101 - Chennai"): {"Rice": level, "Sugar": 0, "Wheat": 0},
