@@ -32,19 +32,16 @@ def get_user_uid(username, password):
     return None
 
 def logout():
-    # Clear session state variables related to login
     keys_to_clear = ["logged_in", "uid", "username", "user_data", "is_admin"]
     for key in keys_to_clear:
         if key in st.session_state:
             del st.session_state[key]
-    # After this, the app will rerun from top and show login
 
 def app(lang_toggle):
     set_background()
     t = get_translator(lang_toggle)
     st.title(t("Ration Ordering Portal"))
 
-    # Initialize session state variables if not present
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
         st.session_state.uid = ""
@@ -55,13 +52,10 @@ def app(lang_toggle):
     if not st.session_state.logged_in:
         username = st.text_input(t("Username"))
         password = st.text_input(t("Password"), type="password")
-        if st.button(t("Login")):
-            if username == "ADMIN" and password == "0000":
-                st.session_state.logged_in = True
-                st.session_state.is_admin = True
-                st.session_state.username = "ADMIN"
-                st.success(t("Admin logged in successfully!"))
-            else:
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button(t("User Login")):
                 uid = get_user_uid(username, password)
                 if uid:
                     user_ref = db.reference(f"/{uid}")
@@ -74,9 +68,20 @@ def app(lang_toggle):
                     st.success(f"{t('Welcome')}, {username}!")
                 else:
                     st.error(t("Invalid username or password."))
+
+        with col2:
+            if st.button(t("Admin Login")):
+                if username == "ADMIN" and password == "0000":
+                    st.session_state.logged_in = True
+                    st.session_state.is_admin = True
+                    st.session_state.username = "ADMIN"
+                    st.success(t("Admin logged in successfully!"))
+                else:
+                    st.error(t("Invalid admin credentials."))
+
         return
 
-    # Logged in area
+    # After login
     if st.session_state.is_admin:
         st.subheader(t("Admin Dashboard"))
         ref = db.reference("/")
