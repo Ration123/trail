@@ -99,7 +99,7 @@ def set_background():
     """, unsafe_allow_html=True)
 
 def show_title_image():
-    st.image("https://raw.githubusercontent.com/Ration123/RATION/main/title", use_container_width=True)
+    st.image("https://raw.githubusercontent.com/Ration123/trail/main/title.jpg", use_container_width=True)
 
 def get_translator(lang):
     translator = GoogleTranslator(source='en', target='ta') if lang else None
