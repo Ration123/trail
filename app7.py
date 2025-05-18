@@ -41,43 +41,41 @@ def chatbot_app():
 
     # Fixed-position button style and logic
     # STYLE + HELP BOT FIXED BUTTON ON BOTTOM-RIGHT
-    st.markdown(f"""
-     <style>
-    .helpbot-container {{
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 9999;
-    }}
-    .helpbot-button {{
-        background-color: #1e1e2f;
-        color: white;
-        padding: 10px 18px;
-        border: none;
-        border-radius: 12px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
-        cursor: pointer;
-    }}
-    .helpbot-button img {{
-        height: 24px;
-        margin-right: 8px;
-    }}
-    .streamlit-expander, .stButton > button {{
-        z-index: 1;
-        position: relative;
-    }}
+     st.markdown(f"""
+    <style>
+        .toggle-btn-wrapper {{
+            display: flex;
+            align-items: center;
+        }}
+        .toggle-btn-wrapper button {{
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        .toggle-btn-wrapper button:hover {{
+            background-color: #c82333;
+        }}
+        .toggle-btn-wrapper img {{
+            height: 24px;
+        }}
     </style>
-    <div class="helpbot-container">
+    <div class="toggle-btn-wrapper">
         <form action="" method="post">
-            <button class="helpbot-button" type="submit" name="helpbot_toggle">
-                <img src="{tamilnadu_icon_url}" alt="Logo"> HELP BOT
+            <button type="submit" name="toggle_helpbot_button">
+                <img src="{logo_url}" alt="Logo"> HELP BOT
             </button>
         </form>
     </div>
 """, unsafe_allow_html=True)
+
 
 
     # Logic toggle on rerun (workaround: click resets page and toggles state)
