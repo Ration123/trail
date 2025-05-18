@@ -39,49 +39,28 @@ def chatbot_app():
     if "reset_selectbox" not in st.session_state:
         st.session_state.reset_selectbox = False
 
-    # Inject CSS for fixed button
+    # Fixed-position HELP BOT button with Streamlit button
     st.markdown("""
         <style>
-        .helpbot-button {
+        .helpbot-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 1000;
         }
-        .helpbot-button button {
-            background-color: #007bff;
-            color: white;
-            border-radius: 50px;
-            padding: 10px 20px;
-            border: none;
-            font-weight: bold;
-        }
-        .helpbot-button img {
-            width: 20px;
-            height: 20px;
-            vertical-align: middle;
-            margin-right: 8px;
-        }
         </style>
+        <div class="helpbot-container">
     """, unsafe_allow_html=True)
 
-    # Place fixed helpbot button using HTML and Streamlit
-    helpbot_clicked = st.markdown(f"""
-        <div class="helpbot-button">
-            <form action="" method="post">
-                <button type="submit" name="helpbot_click">
-                    <img src="{tamilnadu_icon_url}"/> HELP BOT
-                </button>
-            </form>
-        </div>
-    """, unsafe_allow_html=True)
+    helpbot_clicked = st.button("🛎️ HELP BOT", key="fixed_helpbot")
 
-    # Manually handle helpbot button click
-    if st.experimental_get_query_params().get("helpbot_click") is not None:
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    if helpbot_clicked:
         st.session_state.chat_open = not st.session_state.chat_open
         st.experimental_rerun()
 
-    # If HELP BOT is open, display the chat interface
+    # If HELP BOT is open, show the chat
     if st.session_state.chat_open:
         selected_question = st.selectbox("Choose your question:", options=questions, index=0, key="chat_question_select")
         if selected_question != questions[0]:
@@ -89,16 +68,15 @@ def chatbot_app():
             bot_reply = get_bot_response(selected_question)
             st.session_state.chat_history.append(("bot", bot_reply))
             st.session_state.reset_selectbox = True
-            st.experimental_rerun()
+            
 
-        # Display chat messages
         st.markdown('<div style="max-height: 300px; overflow-y: auto;">', unsafe_allow_html=True)
         for sender, msg in st.session_state.chat_history:
             color = "#0084ff" if sender == "user" else "#e5e5ea"
             align = "right" if sender == "user" else "left"
             text_color = "white" if sender == "user" else "black"
             st.markdown(
-                f'<div style="background-color:{color}; color:{text_color}; padding:8px; border-radius:12px; max-width:80%; margin:6px 0; align-self:{align}; word-wrap: break-word;">{msg}</div>',
+                f'<div style="background-color:{color}; color:{text_color}; padding:8px; border-radius:12px; max-width:80%; margin:6px 0; word-wrap: break-word;">{msg}</div>',
                 unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
