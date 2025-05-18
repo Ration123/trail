@@ -18,14 +18,15 @@ t = get_translator(lang_toggle)
 with st.sidebar:
     selected_option = option_menu(
         menu_title="🛒 Tamil Nadu Ration Shop",
-        options=[
-            "🏠 Home",
-            "📊 Stock Availability",
-            "🔐 Login / Signup",
-            "📬 Grievance",
-            "🌐 Language",
-            "📞 Contact"
-        ],
+       options = [
+    "🏠 Home",
+    "📊 Stock Availability",
+    "🔐 User Login",
+    "🔑 Admin Login",          # <-- added this option
+    "📬 Grievance",
+    "🌐 Language",
+    "📞 Contact"
+],
         icons=[
             "house-door", 
             "bar-chart-line", 
