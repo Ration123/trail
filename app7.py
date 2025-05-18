@@ -63,7 +63,7 @@ def chatbot_app():
                 st.session_state.chat_history.append(("bot", bot_reply))
                 # Trigger selectbox reset next run
                 st.session_state.reset_selectbox = True
-                st.experimental_rerun()
+                
 
         # Display chat history below
         st.markdown('<div style="max-height: 300px; overflow-y: auto;">', unsafe_allow_html=True)
