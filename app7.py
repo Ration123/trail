@@ -1,15 +1,15 @@
 import streamlit as st
-
+def chatbot_app():
 # Load your Tamil Nadu icon image
-tamilnadu_icon = "/mnt/data/58015941-1cce-47c5-ba49-75c9156123e8.png"
+ tamilnadu_icon = "/mnt/data/58015941-1cce-47c5-ba49-75c9156123e8.png"
 
 # Initialize chat UI state
-if "chat_open" not in st.session_state:
+ if "chat_open" not in st.session_state:
     st.session_state.chat_open = False
-if "chat_history" not in st.session_state:
+ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-def get_bot_response(msg):
+ def get_bot_response(msg):
     msg = msg.lower()
     if "stock" in msg:
         return "You can check stock availability in the 'Stock Availability' section."
@@ -29,7 +29,7 @@ def get_bot_response(msg):
         return "Sorry, I didn't understand that. Please ask something else."
 
 # Custom CSS for fixed icon and chat box
-st.markdown(
+ st.markdown(
     """
     <style>
     .chat-button {
@@ -83,10 +83,10 @@ st.markdown(
 )
 
 # Display the Tamil Nadu icon button to open/close chat
-if st.button("", key="chat_toggle", help="Open Chatbot", args=None):
+ if st.button("", key="chat_toggle", help="Open Chatbot", args=None):
     st.session_state.chat_open = not st.session_state.chat_open
 
-st.markdown(
+ st.markdown(
     f"""
     <img src="data:image/png;base64,{st.experimental_get_query_params().get('image', [''])[0]}" 
     class="chat-button" alt="Chat Bot" 
@@ -97,7 +97,7 @@ st.markdown(
 )
 
 # Show chat box only if toggled
-if st.session_state.chat_open:
+ if st.session_state.chat_open:
     with st.container():
         st.markdown('<div class="chat-box">', unsafe_allow_html=True)
 
@@ -116,6 +116,6 @@ if st.session_state.chat_open:
             reply = get_bot_response(user_input)
             st.session_state.chat_history.append({"sender": "bot", "message": reply})
             # Clear input by rerun
-            st.experimental_rerun()
+            
 
         st.markdown('</div>', unsafe_allow_html=True)
