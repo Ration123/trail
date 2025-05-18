@@ -26,26 +26,26 @@ ADMIN_USERNAME = "ADMIN"
 ADMIN_PASSWORD = "0000"
 
 def show_admin_dashboard(t):
-    st.header(t["dashboard"])
+    st.header(t("dashboard"))
     ref = db.reference('/')
     all_data = ref.get()
 
-    st.write(t["firebase_data"])
+    st.write(t("firebase_data"))
     st.json(all_data)
 
 def app(lang_toggle):
     set_background()
     t = get_translator(lang_toggle)
 
-    st.title(t["admin_login_title"])
+    st.title(t("admin_login_title"))
 
-    username = st.text_input(t["username_label"])
-    password = st.text_input(t["password_label"], type="password")
-    login_btn = st.button(t["login_button"])
+    username = st.text_input(t("username_label"))
+    password = st.text_input(t("password_label"), type="password")
+    login_btn = st.button(t("login_button"))
 
     if login_btn:
         if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
-            st.success(t["success"])
+            st.success(t("success"))
             show_admin_dashboard(t)
         else:
-            st.error(t["error"])
+            st.error(t("error"))
