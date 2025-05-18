@@ -39,9 +39,9 @@ def app(lang_toggle):
 
     # Dummy stock data
     stock_data = {
-        t("Shop 101 - Chennai"): {"Rice": 100, "Sugar": 40, "Wheat": 0},
-        t("Shop 102 - Madurai"): {"Rice": 80, "Sugar": 75, "Wheat": 60},
-        t("Shop 103 - Coimbatore"): {"Rice": 30, "Sugar": 60, "Wheat": 90},
+        t("Shop 101 - Chennai"): {"Rice": 100, "Sugar": 0, "Wheat": 0},
+        t("Shop 102 - Madurai"): {"Rice": 0, "Sugar": 0, "Wheat": 0},
+        t("Shop 103 - Coimbatore"): {"Rice": 0, "Sugar": 0, "Wheat": 0},
     }
 
     if shop in stock_data:
