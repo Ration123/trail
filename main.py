@@ -5,6 +5,7 @@ import app1
 import app2
 import app3
 import app4
+import app6
 
 # === Setup ===
 set_background()
@@ -60,8 +61,10 @@ if selected_option == "🏠 Home":
 elif selected_option == "📊 Stock Availability":
     app1.app(lang_toggle)
 
-elif selected_option == "🔐 Login / Signup":
+elif selected_option == "🔐 User Login":
     app2.app(lang_toggle)
+elif selected_option == "🔑 Admin Login":
+    app6.app(lang_toggle) 
 
 elif selected_option == "📬 Grievance":
     app3.app(lang_toggle)
