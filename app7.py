@@ -32,120 +32,49 @@ def chatbot_app():
         else:
             return "Sorry, I didn't understand that. Please select another question."
 
-    # Initialize session state variables
     if "chat_open" not in st.session_state:
         st.session_state.chat_open = False
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
-    if "asked" not in st.session_state:
-        st.session_state.asked = False
+    if "reset_selectbox" not in st.session_state:
+        st.session_state.reset_selectbox = False
 
-    # CSS styles for button and chat box
-    st.markdown("""
-    <style>
-    .fixed-helpbot {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background-color: #0084ff;
-        border-radius: 30px;
-        padding: 8px 16px;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        user-select: none;
-        width: max-content;
-    }
-    .fixed-helpbot img {
-        height: 24px;
-        width: 24px;
-    }
-    .chat-box-container {
-        position: fixed;
-        bottom: 70px;
-        right: 20px;
-        width: 320px;
-        max-height: 400px;
-        background: #f9f9f9;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        border-radius: 10px;
-        padding: 10px;
-        overflow-y: auto;
-        font-family: Arial, sans-serif;
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-    }
-    .chat-header {
-        background-color: #0084ff;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 8px 8px 0 0;
-        font-weight: bold;
-    }
-    .chat-message-user {
-        background-color: #0084ff;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 12px;
-        margin: 6px 0;
-        align-self: flex-end;
-        max-width: 80%;
-        word-wrap: break-word;
-    }
-    .chat-message-bot {
-        background-color: #e5e5ea;
-        color: black;
-        padding: 8px 12px;
-        border-radius: 12px;
-        margin: 6px 0;
-        align-self: flex-start;
-        max-width: 80%;
-        word-wrap: break-word;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    # HELP BOT button with image and text side by side, fixed position
+    # Help bot button
     col1, col2 = st.columns([0.1, 1])
-
     with col1:
         st.image(tamilnadu_icon_url, width=24)
-
     with col2:
         if st.button("HELP BOT"):
-            st.session_state.chat_open = not st.session_state.get("chat_open", False)
+            st.session_state.chat_open = not st.session_state.chat_open
 
     if st.session_state.chat_open:
-        st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
-        st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
+        question_default = questions[0]
+        if st.session_state.reset_selectbox:
+            # Reset by temporarily setting to default and turning off reset flag
+            selected_question = st.selectbox("Choose your question:", options=questions, index=0, key="chat_question_select")
+            st.session_state.reset_selectbox = False
+            # Do NOT process input this run; just resetting
+        else:
+            selected_question = st.selectbox("Choose your question:", options=questions, index=0, key="chat_question_select")
+            if selected_question != question_default:
+                # Add user message and bot response
+                st.session_state.chat_history.append(("user", selected_question))
+                bot_reply = get_bot_response(selected_question)
+                st.session_state.chat_history.append(("bot", bot_reply))
+                # Trigger selectbox reset next run
+                st.session_state.reset_selectbox = True
+                st.experimental_rerun()
 
-        # Show chat history
-        for sender, message in st.session_state.chat_history:
-            cls = "chat-message-user" if sender == "user" else "chat-message-bot"
-            st.markdown(f'<div class="{cls}">{message}</div>', unsafe_allow_html=True)
-
-        # Dropdown selectbox for questions
-        question = st.selectbox("Choose your question:", options=questions, key="chat_question_select")
-
-        if question != questions[0] and not st.session_state.asked:
-            st.session_state.chat_history.append(("user", question))
-            answer = get_bot_response(question)
-            st.session_state.chat_history.append(("bot", answer))
-            st.session_state.asked = True
-
-        if st.session_state.asked:
-            # Reset the selectbox by setting to default and rerun
-            st.session_state.chat_question_select = questions[0]
-            st.session_state.asked = False
-            st.experimental_rerun()
-
-        st.markdown("</div>", unsafe_allow_html=True)
+        # Display chat history below
+        st.markdown('<div style="max-height: 300px; overflow-y: auto;">', unsafe_allow_html=True)
+        for sender, msg in st.session_state.chat_history:
+            color = "#0084ff" if sender == "user" else "#e5e5ea"
+            align = "right" if sender == "user" else "left"
+            text_color = "white" if sender == "user" else "black"
+            st.markdown(
+                f'<div style="background-color:{color}; color:{text_color}; padding:8px; border-radius:12px; max-width:80%; margin:6px 0; align-self:{align}; word-wrap: break-word;">{msg}</div>',
+                unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
