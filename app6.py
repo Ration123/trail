@@ -1,6 +1,7 @@
 import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, db
+from utils import set_background, get_translator
 
 # Initialize Firebase once
 if not firebase_admin._apps:
