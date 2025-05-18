@@ -58,7 +58,7 @@ def chatbot_app():
 
     if helpbot_clicked:
         st.session_state.chat_open = not st.session_state.chat_open
-        st.experimental_rerun()
+        
 
     # If HELP BOT is open, show the chat
     if st.session_state.chat_open:
