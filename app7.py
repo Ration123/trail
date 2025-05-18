@@ -112,6 +112,6 @@ def chatbot_app():
             st.session_state.chat_history.append({"sender": "user", "message": question})
             reply = get_bot_response(question)
             st.session_state.chat_history.append({"sender": "bot", "message": reply})
-            st.experimental_rerun()
+            
 
         st.markdown('</div>', unsafe_allow_html=True)
