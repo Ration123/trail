@@ -78,8 +78,8 @@ elif selected_option == "📞 Contact":
     st.markdown(f"<h2 style='color:black; font-weight:900;'>{t('Contact Us')}</h2>", unsafe_allow_html=True)
     
     # Add clickable links for the phone number and email
-    contact_number = "123-456-7890"
-    email = "support@example.com"
+    contact_number = "9344810244"
+    email = "keerthivasangopal2004@gmail.com"
     
     st.markdown(f"""
         <p style='color:black; font-weight:900; font-size:18px;'>
