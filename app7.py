@@ -37,6 +37,8 @@ def chatbot_app():
         st.session_state.chat_open = False
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
+    if "asked" not in st.session_state:
+        st.session_state.asked = False
 
     # CSS styles for button and chat box
     st.markdown("""
@@ -110,19 +112,16 @@ def chatbot_app():
     """, unsafe_allow_html=True)
 
     # HELP BOT button with image and text side by side, fixed position
-    # We'll create a custom clickable container using st.markdown and JS to toggle chat_open
-    # But Streamlit doesn't support JS directly, so we'll keep it simple with columns:
     col1, col2 = st.columns([0.1, 1])
-  
 
     with col1:
-      st.image("https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png", width=24)
+        st.image(tamilnadu_icon_url, width=24)
 
     with col2:
-     if st.button("HELP BOT"):
-        st.session_state.chat_open = not st.session_state.get("chat_open", False)
+        if st.button("HELP BOT"):
+            st.session_state.chat_open = not st.session_state.get("chat_open", False)
 
-     if st.session_state.chat_open:
+    if st.session_state.chat_open:
         st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
         st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
 
@@ -134,18 +133,20 @@ def chatbot_app():
         # Dropdown selectbox for questions
         question = st.selectbox("Choose your question:", options=questions, key="chat_question_select")
 
-        if question != questions[0]:
-            # Add user message to history
+        if question != questions[0] and not st.session_state.asked:
             st.session_state.chat_history.append(("user", question))
-            # Get bot response
             answer = get_bot_response(question)
             st.session_state.chat_history.append(("bot", answer))
-            # Reset dropdown to default after response
+            st.session_state.asked = True
+
+        if st.session_state.asked:
+            # Reset the selectbox by setting to default and rerun
             st.session_state.chat_question_select = questions[0]
-            # Rerun to refresh chat window immediately
-           
+            st.session_state.asked = False
+            st.experimental_rerun()
 
         st.markdown("</div>", unsafe_allow_html=True)
+
 
 if __name__ == "__main__":
     chatbot_app()
