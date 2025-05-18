@@ -1,16 +1,14 @@
 import streamlit as st
 
 def chatbot_app():
-    # Load your Tamil Nadu icon image path (change path if needed)
-    tamilnadu_icon = "/mnt/data/58015941-1cce-47c5-ba49-75c9156123e8.png"
+    # Tamil Nadu logo icon URL (small image hosted on GitHub)
+    tamilnadu_icon_url = "https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png"
 
     # Initialize session state
     if "chat_open" not in st.session_state:
         st.session_state.chat_open = False
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
-    if "chat_input" not in st.session_state:
-        st.session_state.chat_input = ""
 
     # Bot logic
     def get_bot_response(msg):
@@ -32,23 +30,26 @@ def chatbot_app():
         else:
             return "Sorry, I didn't understand that. Please ask something else."
 
-    # Custom CSS for chatbot icon and chat box
-    st.markdown(
-        f"""
+    # --- Custom CSS ---
+    st.markdown("""
         <style>
-        .chat-button {{
+        .chat-button {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
+            background-image: url('""" + tamilnadu_icon_url + """');
+            background-size: cover;
+            background-position: center;
+            border: none;
             cursor: pointer;
             z-index: 9999;
-        }}
-        .chat-box {{
+        }
+        .chat-box {
             position: fixed;
-            bottom: 90px;
+            bottom: 80px;
             right: 20px;
             width: 320px;
             max-height: 400px;
@@ -61,8 +62,8 @@ def chatbot_app():
             z-index: 9998;
             display: flex;
             flex-direction: column;
-        }}
-        .chat-message-user {{
+        }
+        .chat-message-user {
             background-color: #0084ff;
             color: white;
             padding: 8px 12px;
@@ -71,8 +72,8 @@ def chatbot_app():
             align-self: flex-end;
             max-width: 80%;
             word-wrap: break-word;
-        }}
-        .chat-message-bot {{
+        }
+        .chat-message-bot {
             background-color: #e5e5ea;
             color: black;
             padding: 8px 12px;
@@ -81,51 +82,35 @@ def chatbot_app():
             align-self: flex-start;
             max-width: 80%;
             word-wrap: break-word;
-        }}
+        }
         </style>
-        <script>
-        function toggleChat() {{
-            document.getElementById("chat-toggle-button").click();
-        }}
-        </script>
-        """,
-        unsafe_allow_html=True
-    )
+    """, unsafe_allow_html=True)
 
-    # Button to toggle chat (invisible, triggered by icon)
-    if st.button("💬", key="chat-toggle-button"):
+    # Hidden button to toggle chat
+    chat_toggle = st.button(" ", key="toggle", help="Toggle Chatbot")
+    if chat_toggle:
         st.session_state.chat_open = not st.session_state.chat_open
 
-    # Chatbot icon (fixed at bottom right)
-    st.markdown(
-        f"""
-        <img src="file://{tamilnadu_icon}" 
-        class="chat-button" alt="Chat Bot" 
-        onclick="toggleChat()" style="background-size: cover;">
-        """,
-        unsafe_allow_html=True
-    )
+    # Floating chatbot icon
+    st.markdown(f"""
+        <div class="chat-button" onclick="document.querySelector('button[kind=primary]').click()"></div>
+    """, unsafe_allow_html=True)
 
-    # Chat box if opened
+    # Show chat UI if open
     if st.session_state.chat_open:
-        with st.container():
-            st.markdown('<div class="chat-box">', unsafe_allow_html=True)
+        st.markdown('<div class="chat-box">', unsafe_allow_html=True)
 
-            # Display chat history
-            for chat in st.session_state.chat_history:
-                if chat["sender"] == "user":
-                    st.markdown(f'<div class="chat-message-user">{chat["message"]}</div>', unsafe_allow_html=True)
-                else:
-                    st.markdown(f'<div class="chat-message-bot">{chat["message"]}</div>', unsafe_allow_html=True)
+        # Chat history
+        for chat in st.session_state.chat_history:
+            role_class = "chat-message-user" if chat["sender"] == "user" else "chat-message-bot"
+            st.markdown(f'<div class="{role_class}">{chat["message"]}</div>', unsafe_allow_html=True)
 
-            # Text input
-            user_input = st.text_input("Ask something...", key="chat_input", label_visibility="collapsed")
+        # Chat input
+        user_input = st.selectbox("Ask something...", ["", "How to check stock?", "How to login as user?", "How to place order?", "How to submit grievance?"], key="chat_select")
+        if user_input and user_input.strip() != "":
+            st.session_state.chat_history.append({"sender": "user", "message": user_input})
+            reply = get_bot_response(user_input)
+            st.session_state.chat_history.append({"sender": "bot", "message": reply})
+              # Clear input by rerunning
 
-            if user_input:
-                st.session_state.chat_history.append({"sender": "user", "message": user_input})
-                reply = get_bot_response(user_input)
-                st.session_state.chat_history.append({"sender": "bot", "message": reply})
-                st.session_state.chat_input = ""
-                st.rerun()
-
-            st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
