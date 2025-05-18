@@ -91,18 +91,6 @@ def chatbot_app():
     """, unsafe_allow_html=True)
 
     # --- Top Row Layout ---
-    col1, col2 = st.columns([1, 6])
-    with col1:
-        st.image(tamilnadu_icon_url, width=80)
-        st.markdown(f"""
-            <div class="help-bot-container">
-                <img class="mic-icon" src="{mic_icon_url}" onclick="document.querySelector('button[kind=primary]').click()" />
-                <div class="help-label">HELP BOT</div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    with col2:
-        st.title("Tamil Nadu Ration Shop Portal")
 
     # Toggle button (hidden)
     chat_toggle = st.button(" ", key="toggle", help="Toggle Chatbot")
