@@ -29,7 +29,7 @@ def app(lang_toggle):
     t = get_translator(lang_toggle)
     
     ref = db.reference("/level")
-    level = ref.get()
+    level = ref.get()+100
 
     st.title("📦 Stock Level")
     st.write(f"**Current Level:** {level}")
@@ -42,7 +42,7 @@ def app(lang_toggle):
     
     # Dummy stock data
     stock_data = {
-        t("Shop 101 - Chennai"): {"Rice": rice_level, "Sugar": 0, "Wheat": 0},
+        t("Shop 101 - Chennai"): {"Rice": level, "Sugar": 0, "Wheat": 0},
         t("Shop 102 - Madurai"): {"Rice": 0, "Sugar": 0, "Wheat": 0},
         t("Shop 103 - Coimbatore"): {"Rice": 0, "Sugar": 0, "Wheat": 0},
     }
