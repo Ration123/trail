@@ -36,7 +36,7 @@ def app(lang_toggle):
     t = get_translator(lang_toggle)
     st.title(t("Ration Ordering Portal"))
 
-    # Session initialization
+    # Session initializatio
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
         st.session_state.uid = ""
