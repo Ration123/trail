@@ -28,16 +28,11 @@ if not firebase_admin._apps:
 def app(lang_toggle):
     t = get_translator(lang_toggle)
     
-    all_users = db.reference("/").get()
-    
-    rice_level = 0
-    
-    if  "level" in all_users.items():
-            rice_level = all_user["level"]+100
-            
-            
-    else:
-        print("ERROR")
+    ref = db.reference("/level")
+    level = ref.get()
+
+    st.title("📦 Stock Level")
+    st.write(f"**Current Level:** {level}")
     # === Stock Availability Section ===
     shop = st.selectbox(t("Select Shop"), [
         t("Shop 101 - Chennai"), 
