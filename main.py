@@ -6,7 +6,7 @@ import app2
 import app3
 import app4
 import app6
-
+import app7
 # === Setup ===
 set_background()
 set_responsive_style()
@@ -92,7 +92,7 @@ elif selected_option == "📞 Contact":
             {t('📧 Email:')} <a href='mailto:{email}' style='color:#1f4e79;'>{email}</a>
         </p>
     """, unsafe_allow_html=True)
-import app7
-
-
 app7.chatbot_app()
+
+
+
