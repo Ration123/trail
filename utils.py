@@ -113,7 +113,7 @@ def show_title_image():
     """, unsafe_allow_html=True)
     
     st.markdown(
-        f"<img src='https://raw.githubusercontent.com/Ration123/trail/main/title.jpg' class='responsive-image'>",
+        f"<img src='https://raw.githubusercontent.com/Ration123/trail/main/title.JPG' class='responsive-image'>",
         unsafe_allow_html=True
     )
 
