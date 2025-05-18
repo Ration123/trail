@@ -4,6 +4,7 @@ def chatbot_app():
     # Tamil Nadu logo URL (raw githubusercontent link)
     tamilnadu_icon_url = "https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png"
 
+    # Initialize session state variables if not present
     if "chat_open" not in st.session_state:
         st.session_state.chat_open = False
     if "chat_history" not in st.session_state:
@@ -28,7 +29,7 @@ def chatbot_app():
         else:
             return "Sorry, I didn't understand that. Please ask something else."
 
-    # CSS styles for the fixed HELP BOT button and chat box
+    # CSS styles for button and chatbox
     st.markdown(
         """
         <style>
@@ -101,8 +102,9 @@ def chatbot_app():
         unsafe_allow_html=True,
     )
 
-    # Fixed bottom right HELP BOT button (outside any container to avoid duplicate keys)
-    clicked = st.button("HELP BOT", key="unique_helpbot_button")
+    # Fixed bottom right HELP BOT button
+    # Use a unique key here to avoid duplicate key errors
+    clicked = st.button("HELP BOT", key="help_bot_button_unique_12345")
 
     # Toggle chat box visibility on button click
     if clicked:
@@ -110,25 +112,29 @@ def chatbot_app():
 
     # Show chat box if open
     if st.session_state.chat_open:
-        st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
-        st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
+        chat_container = st.container()
 
-        # Show chat messages
-        for sender, message in st.session_state.chat_history:
-            cls = "chat-message-user" if sender == "user" else "chat-message-bot"
-            st.markdown(f'<div class="{cls}">{message}</div>', unsafe_allow_html=True)
+        with chat_container:
+            st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
+            st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
 
-        # Input text box and send button with unique keys
-        user_input = st.text_input("Your question:", key="chat_input", placeholder="Ask me anything...")
+            # Show chat messages
+            for sender, message in st.session_state.chat_history:
+                cls = "chat-message-user" if sender == "user" else "chat-message-bot"
+                st.markdown(f'<div class="{cls}">{message}</div>', unsafe_allow_html=True)
 
-        if st.button("Send", key="send_button"):
-            if user_input and user_input.strip():
-                st.session_state.chat_history.append(("user", user_input))
-                response = get_bot_response(user_input)
-                st.session_state.chat_history.append(("bot", response))
-                st.experimental_rerun()
+            # Input text box and send button
+            user_input = st.text_input("Your question:", key="chat_input", value="", placeholder="Ask me anything...")
 
-        st.markdown("</div>", unsafe_allow_html=True)
+            if st.button("Send", key="send_button"):
+                if user_input.strip():
+                    st.session_state.chat_history.append(("user", user_input))
+                    response = get_bot_response(user_input)
+                    st.session_state.chat_history.append(("bot", response))
+                    # Rerun to update chat history display
+                    st.experimental_rerun()
+
+            st.markdown("</div>", unsafe_allow_html=True)
 
 # Run the chatbot app
 chatbot_app()
