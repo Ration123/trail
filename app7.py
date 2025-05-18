@@ -1,10 +1,10 @@
 import streamlit as st
-
+def chatbot_app()
 # Tamil Nadu logo URL
-tamilnadu_icon_url = "https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png"
+ tamilnadu_icon_url = "https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png"
 
 # Predefined questions for dropdown
-questions = [
+ questions = [
     "Select a question...",
     "How to check stock availability?",
     "How to login as user?",
@@ -13,9 +13,9 @@ questions = [
     "How to submit a grievance?",
     "How to switch language?",
     "How to contact support?",
-]
+ ]
 
-def get_bot_response(msg):
+ def get_bot_response(msg):
     msg = msg.lower()
     if "stock" in msg:
         return "You can check stock availability in the 'Stock Availability' section."
@@ -35,13 +35,13 @@ def get_bot_response(msg):
         return "Sorry, I didn't understand that. Please select another question."
 
 # Initialize chat state in session state
-if "chat_open" not in st.session_state:
+ if "chat_open" not in st.session_state:
     st.session_state.chat_open = False
-if "chat_history" not in st.session_state:
+ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # CSS styles for fixed HELP BOT button and chat box
-st.markdown(
+ st.markdown(
     """
     <style>
     .fixed-helpbot {
@@ -114,15 +114,15 @@ st.markdown(
 )
 
 # Single HELP BOT toggle button (unique key)
-if st.button(
+ if st.button(
     label=f'HELP BOT <img src="{tamilnadu_icon_url}" height="24" width="24">',
     key="help_bot_button",
     help="Click to open/close the chatbot",
-):
+ ):
     st.session_state.chat_open = not st.session_state.chat_open
 
 # Show chatbot window only if chat_open is True
-if st.session_state.chat_open:
+ if st.session_state.chat_open:
     st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
     st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
 
