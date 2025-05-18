@@ -92,3 +92,7 @@ elif selected_option == "📞 Contact":
             {t('📧 Email:')} <a href='mailto:{email}' style='color:#1f4e79;'>{email}</a>
         </p>
     """, unsafe_allow_html=True)
+import app7
+
+
+app7.chatbot_app()
