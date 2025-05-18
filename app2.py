@@ -84,7 +84,7 @@ def app(lang_toggle):
         st.experimental_rerun()
 
     # Admin dashboard
-    if st.session_state.is_admin:
+    if st.session_state.get("is_admin", False):
         st.header(t("Admin Dashboard"))
         ref = db.reference("/")
         all_data = ref.get()
