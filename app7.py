@@ -1,14 +1,14 @@
 import streamlit as st
 
-def chatbot_app():
-    # Tamil Nadu logo URL (raw githubusercontent link)
+def chatbot_app(instance_id="main"):
+    # Tamil Nadu logo URL (not used here, but you can add if needed)
     tamilnadu_icon_url = "https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png"
 
-    # Initialize session state variables if not present
-    if "chat_open" not in st.session_state:
-        st.session_state.chat_open = False
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
+    # Initialize session state variables only once
+    if f"chat_open_{instance_id}" not in st.session_state:
+        st.session_state[f"chat_open_{instance_id}"] = False
+    if f"chat_history_{instance_id}" not in st.session_state:
+        st.session_state[f"chat_history_{instance_id}"] = []
 
     def get_bot_response(msg):
         msg = msg.lower()
@@ -29,7 +29,7 @@ def chatbot_app():
         else:
             return "Sorry, I didn't understand that. Please ask something else."
 
-    # CSS styles for button and chatbox
+    # CSS styling for fixed HELP BOT button and chat box
     st.markdown(
         """
         <style>
@@ -102,39 +102,37 @@ def chatbot_app():
         unsafe_allow_html=True,
     )
 
-    # Fixed bottom right HELP BOT button
-    # Use a unique key here to avoid duplicate key errors
-    clicked = st.button("HELP BOT", key="help_bot_button_unique_12345")
+    # Button to toggle chat visibility
+    clicked = st.button("HELP BOT", key=f"help_bot_button_{instance_id}")
 
-    # Toggle chat box visibility on button click
+    # Toggle chat_open state only if button clicked
     if clicked:
-        st.session_state.chat_open = not st.session_state.chat_open
+        st.session_state[f"chat_open_{instance_id}"] = not st.session_state[f"chat_open_{instance_id}"]
 
     # Show chat box if open
-    if st.session_state.chat_open:
-        chat_container = st.container()
+    if st.session_state[f"chat_open_{instance_id}"]:
+        st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
+        st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
 
-        with chat_container:
-            st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
-            st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
+        # Show chat messages
+        for sender, message in st.session_state[f"chat_history_{instance_id}"]:
+            cls = "chat-message-user" if sender == "user" else "chat-message-bot"
+            st.markdown(f'<div class="{cls}">{message}</div>', unsafe_allow_html=True)
 
-            # Show chat messages
-            for sender, message in st.session_state.chat_history:
-                cls = "chat-message-user" if sender == "user" else "chat-message-bot"
-                st.markdown(f'<div class="{cls}">{message}</div>', unsafe_allow_html=True)
+        # Input text box and send button
+        user_input = st.text_input("Your question:", key=f"chat_input_{instance_id}", value="", placeholder="Ask me anything...")
 
-            # Input text box and send button
-            user_input = st.text_input("Your question:", key="chat_input", value="", placeholder="Ask me anything...")
+        if st.button("Send", key=f"send_button_{instance_id}"):
+            if user_input.strip():
+                # Add user message
+                st.session_state[f"chat_history_{instance_id}"].append(("user", user_input))
+                # Get bot reply
+                response = get_bot_response(user_input)
+                st.session_state[f"chat_history_{instance_id}"].append(("bot", response))
+                # Clear input box after send
+                st.experimental_rerun()
 
-            if st.button("Send", key="send_button"):
-                if user_input.strip():
-                    st.session_state.chat_history.append(("user", user_input))
-                    response = get_bot_response(user_input)
-                    st.session_state.chat_history.append(("bot", response))
-                    # Rerun to update chat history display
-                    st.experimental_rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
 
-            st.markdown("</div>", unsafe_allow_html=True)
-
-# Run the chatbot app
-chatbot_app()
+if __name__ == "__main__":
+    chatbot_app()
