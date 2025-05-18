@@ -138,14 +138,9 @@ st.markdown(
         HELP BOT
     </div>
     """,
-    unsafe_allow_html=True,
-)
-
-# Use a hidden button to toggle chat_open when clicking on the above div
-# We detect that with JS but Streamlit can't handle this natively so simulate by button click
-
-# Display chatbot box if open
-if st.session_state.chat_open:
+    unsafe_allow_html=True,)
+ 
+ if st.session_state.chat_open:
     st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
     st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
 
@@ -166,6 +161,6 @@ if st.session_state.chat_open:
         # Reset dropdown to default after response
         st.session_state.chat_question_select = questions[0]
         # Rerun to refresh chat window
-        st.experimental_rerun()
+        
 
     st.markdown("</div>", unsafe_allow_html=True)
