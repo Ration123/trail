@@ -70,7 +70,7 @@ def chatbot_app():
     <div class="toggle-btn-wrapper">
         <form action="" method="post">
             <button type="submit" name="toggle_helpbot_button">
-                <img src="{logo_url}" alt="Logo"> HELP BOT
+                <img src="{tamilnadu_icon_url}" alt="Logo"> HELP BOT
             </button>
         </form>
     </div>
