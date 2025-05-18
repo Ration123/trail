@@ -2,6 +2,7 @@ import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, db
 from utils import set_background, show_title_image, get_translator, users, admins, calculate_price
+
 # Initialize Firebase
 if not firebase_admin._apps:
     cred = credentials.Certificate({
@@ -29,10 +30,10 @@ def get_user_uid(username, password):
             return uid
     return None
 
-# App starts here
+# Main app
 def app(lang_toggle):
     set_background()
-    t=get_background()
+    t = get_translator(lang_toggle)
     st.title(t("Ration Ordering Portal"))
 
     # Session initialization
@@ -42,7 +43,7 @@ def app(lang_toggle):
         st.session_state.username = ""
         st.session_state.user_data = {}
 
-    # If not logged in, show login form
+    # Login form
     if not st.session_state.logged_in:
         username = st.text_input(t("Username"))
         password = st.text_input(t("Password"), type="password")
@@ -55,36 +56,38 @@ def app(lang_toggle):
                 st.session_state.uid = uid
                 st.session_state.username = username
                 st.session_state.user_data = user_data
-                st.success(f"t(Welcome), {username}!")
+                st.success(f"{t('Welcome')}, {username}!")
             else:
-                st.error("Invalid username or password.")
-        return  # Stop further code until logged in
+                st.error(t("Invalid username or password."))
+        return  # Stop here until login successful
 
-    # User is logged in
+    # After login
     user_data = st.session_state.user_data
     user_ref = db.reference(f"/{st.session_state.uid}")
 
     if user_data.get("Bill"):
-        st.success("✅ Order already placed!")
-        st.write(f"**Product**: {user_data.get('product')}")
-        st.write(f"**Quantity**: {user_data.get('quantity')}g")
-        st.write(f"**Transaction ID**: {user_data.get('transaction_id')}")
-        
+        st.success("✅ " + t("Order already placed!"))
+        st.write(f"**{t('Product')}**: {user_data.get('product')}")
+        st.write(f"**{t('Quantity')}**: {user_data.get('quantity')}g")
+        st.write(f"**{t('Transaction ID')}**: {user_data.get('transaction_id')}")
     else:
-        st.subheader("🛒 Place Your Order")
-        product = st.selectbox("Select Product", ["Rice"])
-        quantity = st.number_input("Enter quantity in grams", min_value=100, step=100, key="quantity_input")
+        st.subheader("🛒 " + t("Place Your Order"))
+        product = st.selectbox(t("Select Product"), [t("Rice")])
+        quantity = st.number_input(t("Enter quantity in grams"), min_value=100, step=100, key="quantity_input")
         price = (quantity // 100) * 10
-        st.write(f"💰 Total Price: ₹{price}")
+        st.write(f"💰 {t('Total Price')}: ₹{price}")
 
-        st.markdown("### 📲 Scan & Pay")
-        st.image(f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=keerthivasang2004@oksbi&pn=RationStore&am={price}", caption="Scan with any UPI app")
+        st.markdown("### 📲 " + t("Scan & Pay"))
+        st.image(
+            f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=keerthivasang2004@oksbi&pn=RationStore&am={price}",
+            caption=t("Scan with any UPI app")
+        )
 
-        transaction_id = st.text_input("Enter UPI Transaction ID", key="txn_input")
+        transaction_id = st.text_input(t("Enter UPI Transaction ID"), key="txn_input")
 
-        if st.button("Place Order"):
+        if st.button(t("Place Order")):
             if not transaction_id.strip():
-                st.error("⚠️ Please enter a valid UPI Transaction ID.")
+                st.error("⚠️ " + t("Please enter a valid UPI Transaction ID."))
             else:
                 user_ref.update({
                     "product": product,
@@ -92,9 +95,8 @@ def app(lang_toggle):
                     "Bill": True,
                     "transaction_id": transaction_id
                 })
-                st.success("✅ Order placed successfully!")
-                # Refresh user data in session
+                st.success("✅ " + t("Order placed successfully!"))
                 st.session_state.user_data = user_ref.get()
 
-if __name__ == "__main__":
-    app()
+    # Provide language toggle value here, e.g. 'en' or 'ta'
+
