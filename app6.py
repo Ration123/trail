@@ -44,7 +44,7 @@ def show_admin_dashboard(t):
             st.write(f"**Quantity (g):** {user_data.get('quantity', 0)}")
             st.write(f"**Transaction ID:** {user_data.get('transaction_id', '-')}")
             st.write(f"**Bill Placed:** {'✅ Yes' if user_data.get('Bill', False) else '❌ No'}")
-)
+
 
 def app(lang_toggle):
     set_background()
