@@ -38,7 +38,7 @@ def chatbot_app():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
-    # HELP BOT button (fixed, styled like your image)
+    # HELP BOT button (styled as shown in the screenshot)
     st.markdown(f"""
         <style>
             .fixed-help-button {{
@@ -68,7 +68,7 @@ def chatbot_app():
             }}
         </style>
         <div class="fixed-help-button">
-            <form action="" method="post">
+            <form action="" method="get">
                 <button type="submit" name="toggle_helpbot_button">
                     <img src="{tamilnadu_icon_url}" alt="Logo"> HELP BOT
                 </button>
@@ -76,13 +76,10 @@ def chatbot_app():
         </div>
     """, unsafe_allow_html=True)
 
-    # Detect the button click via request params
-    if st.experimental_get_query_params().get("toggle_helpbot_button") is not None:
+    # Use st.query_params (updated API)
+    if "toggle_helpbot_button" in st.query_params:
         st.session_state.chat_open = not st.session_state.chat_open
-
-    # Use standard Streamlit button inside layout for actual toggle
-    if st.form("hidden_toggle_form", clear_on_submit=True):
-        st.session_state.chat_open = not st.session_state.chat_open
+        st.query_params.clear()  # Optional: clear URL query after toggle
 
     if st.session_state.chat_open:
         st.markdown("### 🤖 Help Bot")
