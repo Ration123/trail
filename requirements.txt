@@ -7,4 +7,5 @@ streamlit-option-menu
 deep-translator
 Pillow
 qrcode
+firebase_admin
 
