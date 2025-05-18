@@ -103,24 +103,9 @@ def chatbot_app():
     btn_container = st.empty()
     with btn_container.container():
         # Use HTML inside streamlit.button is not possible, so use st.markdown clickable div
-        clicked = st.button("HELP BOT", key="helpbot_button")
+        clicked = st.button("HELP BOT", key="unique_helpbot_button")
 
-    # Override button style with fixed position + icon + text via markdown hack
-    # So instead, create the button as clickable div in markdown and detect clicks by rerun?
-    # Streamlit can't capture clicks on markdown div, so fall back to st.button but fixed by CSS.
 
-    # Workaround: Use the "fixed-helpbot" CSS class with st.markdown + st.button invisibly overlayed?
-
-    # We'll do a hack: Show the button but overlay the text and icon fixed at bottom right
-
-    # Show fixed HELP BOT button manually with icon + text in markdown + handle click with st.button invisible
-    # To detect click in st.button we can do like this:
-
-    # So better to do:
-    # 1) Hide default button style with CSS
-    # 2) Show custom div fixed bottom right as clickable label
-
-    # But Streamlit doesn't allow that. So let's just do a fixed button with text only.
 
     # Toggle chat box visibility on button click
     if clicked:
