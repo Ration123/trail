@@ -28,7 +28,8 @@ if not firebase_admin._apps:
 def app(lang_toggle):
     t = get_translator(lang_toggle)
     
-    all_users = db.reference("/").get()
+    all_users = db.reference("/level").get()
+    st.title(all_user)
     rice_level = 0
     
     if  "level" in all_users.items():
