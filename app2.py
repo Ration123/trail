@@ -106,7 +106,7 @@ def app(lang_toggle):
         else:
             st.subheader("🛒 " + t("Place Your Order"))
             product = st.selectbox(t("Select Product"), [t("Rice")])
-            quantity = st.number_input(t("Enter quantity in grams"), min_value=100, step=100, key="quantity_input")
+            quantity = st.number_input(t("Enter quantity in grams"), min_value=100, step=100, max_value=1100,key="quantity_input")
             price = (quantity // 100) * 10
             st.write(f"💰 {t('Total Price')}: ₹{price}")
 
