@@ -57,6 +57,7 @@ def app(lang_toggle):
                 st.session_state.username = username
                 st.session_state.user_data = user_data
                 st.success(f"{t('Welcome')}, {username}!")
+                st.info(f"{t('Your Shop Number')}: {user_data.get('Shop')}")
             else:
                 st.error(t("Invalid username or password."))
         return  # Stop here until login successfu
