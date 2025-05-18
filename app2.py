@@ -35,20 +35,21 @@ def app(lang_toggle):
     t = get_translator(lang_toggle)
     st.title(t("Ration Ordering Portal"))
 
-    # Initial session states
+    # Initialize session state
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
         st.session_state.uid = ""
         st.session_state.username = ""
         st.session_state.user_data = {}
         st.session_state.is_admin = False
-        st.session_state.role = "User"  # default
+        st.session_state.role = "User"
 
-    # Select role (Admin/User)
+    # Role selection
     st.markdown("### 🔐 Select Login Type")
     role = st.radio("Login as:", ["User", "Admin"], horizontal=True, index=0)
     st.session_state.role = role
 
+    # Login interface
     if not st.session_state.logged_in:
         username = st.text_input(t("Username"))
         password = st.text_input(t("Password"), type="password")
@@ -58,9 +59,10 @@ def app(lang_toggle):
                     st.session_state.logged_in = True
                     st.session_state.is_admin = True
                     st.success(t("Welcome, Admin!"))
+                    st.experimental_rerun()
                 else:
                     st.error(t("Invalid admin credentials."))
-            else:  # User login
+            else:
                 uid = get_user_uid(username, password)
                 if uid:
                     user_ref = db.reference(f"/{uid}")
@@ -71,9 +73,15 @@ def app(lang_toggle):
                     st.session_state.user_data = user_data
                     st.session_state.is_admin = False
                     st.success(f"{t('Welcome')}, {username}!")
+                    st.experimental_rerun()
                 else:
                     st.error(t("Invalid username or password."))
-        return  # Wait until login
+        return  # Wait for login to complete
+
+    # Logout button
+    if st.button(t("Logout")):
+        st.session_state.clear()
+        st.experimental_rerun()
 
     # Admin dashboard
     if st.session_state.is_admin:
@@ -91,7 +99,7 @@ def app(lang_toggle):
             st.markdown("---")
         return
 
-    # Normal user view
+    # Normal user dashboard
     user_data = st.session_state.user_data
     user_ref = db.reference(f"/{st.session_state.uid}")
 
