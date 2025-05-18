@@ -48,7 +48,24 @@ def app(lang_toggle):
         st.session_state.username = ""
         st.session_state.user_data = {}
         st.session_state.is_admin = False
+    if "login_mode" not in st.session_state:
+        st.session_state.login_mode = None  # None, "user", or "admin"
+    if "login_success" not in st.session_state:
+        st.session_state.login_success = False
 
+    if not st.session_state.login_mode:
+        st.write("Choose login type:")
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("User Login"):
+                st.session_state.login_mode = "user"
+        with col2:
+            if st.button("Admin Login"):
+                st.session_state.login_mode = "admin"
+        return  # Stop here until login_mode is selected
+
+    # Show login form based on mode
+    st.write(f"**{st.session_state.login_mode.capitalize()} Login**")
     if not st.session_state.logged_in:
         username = st.text_input(t("Username"))
         password = st.text_input(t("Password"), type="password")
