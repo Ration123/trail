@@ -59,7 +59,7 @@ def app(lang_toggle):
                     st.session_state.logged_in = True
                     st.session_state.is_admin = True
                     st.success(t("Welcome, Admin!"))
-                    st.experimental_rerun()
+                
                 else:
                     st.error(t("Invalid admin credentials."))
             else:
@@ -73,7 +73,7 @@ def app(lang_toggle):
                     st.session_state.user_data = user_data
                     st.session_state.is_admin = False
                     st.success(f"{t('Welcome')}, {username}!")
-                    st.experimental_rerun()
+                    
                 else:
                     st.error(t("Invalid username or password."))
         return  # Wait for login to complete
@@ -81,7 +81,7 @@ def app(lang_toggle):
     # Logout button
     if st.button(t("Logout")):
         st.session_state.clear()
-        st.experimental_rerun()
+        
 
     # Admin dashboard
     if st.session_state.get("is_admin", False):
