@@ -1,48 +1,45 @@
 import streamlit as st
+
 def chatbot_app():
-# Tamil Nadu logo URL
- tamilnadu_icon_url = "https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png"
+    tamilnadu_icon_url = "https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png"
+    questions = [
+        "Select a question...",
+        "How to check stock availability?",
+        "How to login as user?",
+        "How to login as admin?",
+        "How to place an order?",
+        "How to submit a grievance?",
+        "How to switch language?",
+        "How to contact support?",
+    ]
 
-# Predefined questions for dropdown
- questions = [
-    "Select a question...",
-    "How to check stock availability?",
-    "How to login as user?",
-    "How to login as admin?",
-    "How to place an order?",
-    "How to submit a grievance?",
-    "How to switch language?",
-    "How to contact support?",
- ]
+    def get_bot_response(msg):
+        msg = msg.lower()
+        if "stock" in msg:
+            return "You can check stock availability in the 'Stock Availability' section."
+        elif "login" in msg and "user" in msg:
+            return "User Login lets you access your personal ration account."
+        elif "login" in msg and "admin" in msg:
+            return "Admin Login is for authorized personnel to manage the portal."
+        elif "order" in msg:
+            return "Place orders after logging in as a user."
+        elif "grievance" in msg or "complaint" in msg:
+            return "Submit complaints in the 'Grievance' section."
+        elif "language" in msg:
+            return "Switch language using the toggle in the sidebar."
+        elif "contact" in msg:
+            return "Contact details are under the 'Contact' section."
+        else:
+            return "Sorry, I didn't understand that. Please select another question."
 
- def get_bot_response(msg):
-    msg = msg.lower()
-    if "stock" in msg:
-        return "You can check stock availability in the 'Stock Availability' section."
-    elif "login" in msg and "user" in msg:
-        return "User Login lets you access your personal ration account."
-    elif "login" in msg and "admin" in msg:
-        return "Admin Login is for authorized personnel to manage the portal."
-    elif "order" in msg:
-        return "Place orders after logging in as a user."
-    elif "grievance" in msg or "complaint" in msg:
-        return "Submit complaints in the 'Grievance' section."
-    elif "language" in msg:
-        return "Switch language using the toggle in the sidebar."
-    elif "contact" in msg:
-        return "Contact details are under the 'Contact' section."
-    else:
-        return "Sorry, I didn't understand that. Please select another question."
+    # Initialize session state variables
+    if "chat_open" not in st.session_state:
+        st.session_state.chat_open = False
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
 
-# Initialize chat state in session state
- if "chat_open" not in st.session_state:
-    st.session_state.chat_open = False
- if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
-
-# CSS styles for fixed HELP BOT button and chat box
- st.markdown(
-    """
+    # CSS styles for button and chat box
+    st.markdown("""
     <style>
     .fixed-helpbot {
         position: fixed;
@@ -60,6 +57,7 @@ def chatbot_app():
         cursor: pointer;
         box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         user-select: none;
+        width: max-content;
     }
     .fixed-helpbot img {
         height: 24px;
@@ -109,40 +107,42 @@ def chatbot_app():
         word-wrap: break-word;
     }
     </style>
-    """,
-    unsafe_allow_html=True,
-)
+    """, unsafe_allow_html=True)
 
-# Single HELP BOT toggle button (unique key)
- if st.button(
-    label=f'HELP BOT <img src="{tamilnadu_icon_url}" height="24" width="24">',
-    key="help_bot_button",
-    help="Click to open/close the chatbot",
- ):
-    st.session_state.chat_open = not st.session_state.chat_open
+    # HELP BOT button with image and text side by side, fixed position
+    # We'll create a custom clickable container using st.markdown and JS to toggle chat_open
+    # But Streamlit doesn't support JS directly, so we'll keep it simple with columns:
+    col1, col2 = st.columns([0.1, 1])
+    with col1:
+        st.image(tamilnadu_icon_url, width=24)
+    with col2:
+        if st.button("HELP BOT", key="help_bot_button", help="Click to open/close the chatbot"):
+            st.session_state.chat_open = not st.session_state.chat_open
 
-# Show chatbot window only if chat_open is True
- if st.session_state.chat_open:
-    st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
-    st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
+    if st.session_state.chat_open:
+        st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
+        st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
 
-    # Show chat history
-    for sender, message in st.session_state.chat_history:
-        cls = "chat-message-user" if sender == "user" else "chat-message-bot"
-        st.markdown(f'<div class="{cls}">{message}</div>', unsafe_allow_html=True)
+        # Show chat history
+        for sender, message in st.session_state.chat_history:
+            cls = "chat-message-user" if sender == "user" else "chat-message-bot"
+            st.markdown(f'<div class="{cls}">{message}</div>', unsafe_allow_html=True)
 
-    # Dropdown selectbox for questions
-    question = st.selectbox("Choose your question:", options=questions, key="chat_question_select")
+        # Dropdown selectbox for questions
+        question = st.selectbox("Choose your question:", options=questions, key="chat_question_select")
 
-    if question != questions[0]:
-        # Add user message to history
-        st.session_state.chat_history.append(("user", question))
-        # Get bot response
-        answer = get_bot_response(question)
-        st.session_state.chat_history.append(("bot", answer))
-        # Reset dropdown to default after response
-        st.session_state.chat_question_select = questions[0]
-        # Force rerun to refresh chat window with new history
-        
+        if question != questions[0]:
+            # Add user message to history
+            st.session_state.chat_history.append(("user", question))
+            # Get bot response
+            answer = get_bot_response(question)
+            st.session_state.chat_history.append(("bot", answer))
+            # Reset dropdown to default after response
+            st.session_state.chat_question_select = questions[0]
+            # Rerun to refresh chat window immediately
+           
 
-    st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+if __name__ == "__main__":
+    chatbot_app()
