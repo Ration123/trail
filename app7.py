@@ -41,8 +41,8 @@ def chatbot_app():
 
     # Fixed-position button style and logic
     # STYLE + HELP BOT FIXED BUTTON ON BOTTOM-RIGHT
-     st.markdown(f"""
-    <style>
+    st.markdown(f"""
+     <style>
         .toggle-btn-wrapper {{
             display: flex;
             align-items: center;
