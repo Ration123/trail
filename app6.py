@@ -26,12 +26,25 @@ ADMIN_USERNAME = "ADMIN"
 ADMIN_PASSWORD = "0000"
 
 def show_admin_dashboard(t):
-    st.header(t("dashboard"))
+    st.header("Admin Dashboard")
+
     ref = db.reference('/')
     all_data = ref.get()
 
-    st.write(t("firebase_data"))
-    st.json(all_data)
+    if not all_data:
+        st.info("No data found.")
+        return
+
+    for user_id, user_data in all_data.items():
+        with st.expander(f"User ID: {user_id}", expanded=False):
+            st.markdown("### User Details")
+            st.write(f"**Username:** {user_data.get('Username', '-')}")
+            st.write(f"**Shop:** {user_data.get('Shop', '-')}")
+            st.write(f"**Product:** {user_data.get('product', '-')}")
+            st.write(f"**Quantity (g):** {user_data.get('quantity', 0)}")
+            st.write(f"**Transaction ID:** {user_data.get('transaction_id', '-')}")
+            st.write(f"**Bill Placed:** {'✅ Yes' if user_data.get('Bill', False) else '❌ No'}")
+)
 
 def app(lang_toggle):
     set_background()
