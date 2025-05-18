@@ -9,6 +9,56 @@ admins = {"admin1": bcrypt.hashpw("admin123".encode('utf-8'), bcrypt.gensalt())}
 
 def calculate_price(quantity):
     return (quantity / 100) * 10
+def set_responsive_style():
+    responsive_css = """
+    <style>
+        /* Base font size and container spacing */
+        html, body, [class*="css"] {
+            font-size: 16px;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .block-container {
+                padding: 1rem 0.5rem !important;
+            }
+
+            .stTextInput input, .stTextArea textarea, .stButton button {
+                font-size: 1.1rem !important;
+                padding: 0.6rem 0.8rem !important;
+            }
+
+            .stSelectbox > div, .stMultiSelect > div {
+                font-size: 1rem !important;
+            }
+
+            .stSidebar {
+                width: 100% !important;
+                position: fixed;
+                bottom: 0;
+                background: #1f4e79 !important;
+                color: white;
+                z-index: 9999 !important;
+            }
+
+            .stSidebar nav {
+                flex-direction: row !important;
+                overflow-x: auto !important;
+                justify-content: space-between !important;
+            }
+
+            .stSidebar nav button {
+                margin: 0.3rem;
+                font-size: 0.9rem !important;
+            }
+
+            .stButton > button {
+                width: 100% !important;
+            }
+        }
+    </style>
+    """
+    st.markdown(responsive_css, unsafe_allow_html=True)
 
 # Background setup
 def set_background():
