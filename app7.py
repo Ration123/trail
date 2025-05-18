@@ -86,15 +86,16 @@ def chatbot_app():
  if st.button("", key="chat_toggle", help="Open Chatbot", args=None):
     st.session_state.chat_open = not st.session_state.chat_open
 
- st.markdown(
+st.markdown(
     f"""
-    <img src="data:image/png;base64,{st.query_params().get('image', [''])[0]}" 
+    <img src="{tamilnadu_icon}" 
     class="chat-button" alt="Chat Bot" 
     onclick="document.querySelector('button[kind=primary]').click()"
-    style="background-image: url('{tamilnadu_icon}'); background-size: cover;">
+    style="background-size: cover;">
     """,
     unsafe_allow_html=True,
 )
+
 
 # Show chat box only if toggled
  if st.session_state.chat_open:
