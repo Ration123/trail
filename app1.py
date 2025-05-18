@@ -31,8 +31,8 @@ def app(lang_toggle):
     ref = db.reference("/level")
     level = ref.get()
 
-    st.title("📦 Stock Level")
-    st.write(f"**Current Level:** {level}")
+    
+    
     # === Stock Availability Section ===
     shop = st.selectbox(t("Select Shop"), [
         t("Shop 101 - Chennai"), 
