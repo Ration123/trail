@@ -3,15 +3,12 @@ import streamlit as st
 def chatbot_app():
     # Tamil Nadu logo icon URL
     tamilnadu_icon_url = "https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png"
-    mic_icon_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Microphone_icon.svg/2048px-Microphone_icon.svg.png"  # Replace with your preferred mic icon
 
-    # Initialize session state
     if "chat_open" not in st.session_state:
         st.session_state.chat_open = False
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
-    # Bot logic
     def get_bot_response(msg):
         msg = msg.lower()
         if "stock" in msg:
@@ -31,30 +28,39 @@ def chatbot_app():
         else:
             return "Sorry, I didn't understand that. Please ask something else."
 
-    # --- Custom CSS ---
+    # Custom CSS + JS for draggable chat box + button fixed bottom right
     st.markdown(f"""
-        <style>
-        .help-bot-container {{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 10px;
-        }}
-        .mic-icon {{
-            width: 40px;
-            height: 40px;
-            margin-top: 5px;
-            cursor: pointer;
-        }}
-        .help-label {{
-            font-size: 12px;
-            color: #444;
-            text-align: center;
-        }}
-        .chat-box {{
+    <style>
+        /* HELP BOT button fixed bottom right */
+        #help-bot-button {{
             position: fixed;
-            top: 120px;
-            left: 20px;
+            bottom: 20px;
+            right: 20px;
+            background-color: #0084ff;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            user-select: none;
+        }}
+        #help-bot-button img {{
+            height: 24px;
+            width: 24px;
+            object-fit: contain;
+        }}
+
+        /* Draggable chat box */
+        #chat-box {{
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
             width: 320px;
             max-height: 400px;
             background: #f9f9f9;
@@ -63,10 +69,23 @@ def chatbot_app():
             padding: 10px;
             overflow-y: auto;
             font-family: Arial, sans-serif;
-            z-index: 9998;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
+            user-select: none;
         }}
+
+        /* Header for drag */
+        #chat-header {{
+            background-color: #0084ff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px 8px 0 0;
+            cursor: move;
+            font-weight: bold;
+        }}
+
+        /* Chat messages */
         .chat-message-user {{
             background-color: #0084ff;
             color: white;
@@ -87,31 +106,120 @@ def chatbot_app():
             max-width: 80%;
             word-wrap: break-word;
         }}
-        </style>
+    </style>
+
+    <button id="help-bot-button" title="Toggle Help Bot" aria-label="Toggle Help Bot">
+        <img src="{tamilnadu_icon_url}" alt="TN Logo" />
+        HELP BOT
+    </button>
+
+    <div id="chat-box" style="display:none;">
+        <div id="chat-header">Help Bot</div>
+        <div id="chat-content"></div>
+        <div id="chat-input-area" style="margin-top:8px;">
+            <select id="chat-select" style="width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #ccc;">
+                <option value="">Quick Help</option>
+                <option value="How to check stock?">How to check stock?</option>
+                <option value="How to login as user?">How to login as user?</option>
+                <option value="How to place order?">How to place order?</option>
+                <option value="How to submit grievance?">How to submit grievance?</option>
+            </select>
+            <button id="chat-send" style="margin-top:6px; width: 100%; padding: 6px; background:#0084ff; color:white; border:none; border-radius:6px; cursor:pointer;">Ask</button>
+        </div>
+    </div>
+
+    <script>
+        const btn = document.getElementById("help-bot-button");
+        const chatBox = document.getElementById("chat-box");
+        const chatHeader = document.getElementById("chat-header");
+        const chatContent = document.getElementById("chat-content");
+        const chatSelect = document.getElementById("chat-select");
+        const chatSend = document.getElementById("chat-send");
+
+        // Toggle chat box display
+        btn.onclick = () => {{
+            if (chatBox.style.display === "none") {{
+                chatBox.style.display = "flex";
+            }} else {{
+                chatBox.style.display = "none";
+            }}
+        }};
+
+        // Simple bot responses in JS (mirror Python logic)
+        function getBotResponse(msg) {{
+            msg = msg.toLowerCase();
+            if (msg.includes("stock")) {{
+                return "You can check stock availability in the 'Stock Availability' section.";
+            }} else if (msg.includes("login") && msg.includes("user")) {{
+                return "User Login lets you access your personal ration account.";
+            }} else if (msg.includes("login") && msg.includes("admin")) {{
+                return "Admin Login is for authorized personnel to manage the portal.";
+            }} else if (msg.includes("order")) {{
+                return "Place orders after logging in as a user.";
+            }} else if (msg.includes("grievance") || msg.includes("complaint")) {{
+                return "Submit complaints in the 'Grievance' section.";
+            }} else if (msg.includes("language")) {{
+                return "Switch language using the toggle in the sidebar.";
+            }} else if (msg.includes("contact")) {{
+                return "Contact details are under the 'Contact' section.";
+            }} else {{
+                return "Sorry, I didn't understand that. Please ask something else.";
+            }}
+        }}
+
+        // Add message to chat window
+        function addMessage(sender, message) {{
+            const div = document.createElement("div");
+            div.className = sender === "user" ? "chat-message-user" : "chat-message-bot";
+            div.textContent = message;
+            chatContent.appendChild(div);
+            chatContent.scrollTop = chatContent.scrollHeight;
+        }}
+
+        // Send message handler
+        chatSend.onclick = () => {{
+            const question = chatSelect.value;
+            if (!question) return;
+            addMessage("user", question);
+            const reply = getBotResponse(question);
+            setTimeout(() => {{
+                addMessage("bot", reply);
+            }}, 300);
+            chatSelect.value = "";
+        }};
+
+        // Drag functionality
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        chatHeader.addEventListener("mousedown", function(e) {{
+            isDragging = true;
+            offsetX = e.clientX - chatBox.getBoundingClientRect().left;
+            offsetY = e.clientY - chatBox.getBoundingClientRect().top;
+            document.body.style.userSelect = "none";
+        }});
+
+        document.addEventListener("mouseup", function() {{
+            isDragging = false;
+            document.body.style.userSelect = "auto";
+        }});
+
+        document.addEventListener("mousemove", function(e) {{
+            if (!isDragging) return;
+            let left = e.clientX - offsetX;
+            let top = e.clientY - offsetY;
+
+            // Clamp position within viewport
+            left = Math.min(window.innerWidth - chatBox.offsetWidth, Math.max(0, left));
+            top = Math.min(window.innerHeight - chatBox.offsetHeight, Math.max(0, top));
+
+            chatBox.style.left = left + "px";
+            chatBox.style.top = top + "px";
+            chatBox.style.bottom = "auto";
+            chatBox.style.right = "auto";
+        }});
+    </script>
     """, unsafe_allow_html=True)
 
-    # --- Top Row Layout ---
 
-    # Toggle button (hidden)
-    chat_toggle = st.button(" ", key="toggle", help="Toggle Chatbot")
-    if chat_toggle:
-        st.session_state.chat_open = not st.session_state.chat_open
-
-    # Chat Window
-    if st.session_state.chat_open:
-        st.markdown('<div class="chat-box">', unsafe_allow_html=True)
-
-        # Chat history
-        for chat in st.session_state.chat_history:
-            role_class = "chat-message-user" if chat["sender"] == "user" else "chat-message-bot"
-            st.markdown(f'<div class="{role_class}">{chat["message"]}</div>', unsafe_allow_html=True)
-
-        # Dropdown for questions (no floating input at bottom)
-        question = st.selectbox("Quick Help", ["", "How to check stock?", "How to login as user?", "How to place order?", "How to submit grievance?"], key="chat_select")
-        if question and question.strip() != "":
-            st.session_state.chat_history.append({"sender": "user", "message": question})
-            reply = get_bot_response(question)
-            st.session_state.chat_history.append({"sender": "bot", "message": reply})
-            
-
-        st.markdown('</div>', unsafe_allow_html=True)
+chatbot_app()
