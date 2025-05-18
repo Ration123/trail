@@ -21,7 +21,7 @@ if not firebase_admin._apps:
     })
 
 # Admin credentials (hardcoded)
-ADMIN_USERNAME = "ADMIN 83CDF32C"
+ADMIN_USERNAME = "ADMIN"
 ADMIN_PASSWORD = "0000"
 
 def admin_login():
