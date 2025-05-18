@@ -93,7 +93,7 @@ def chatbot_app():
     )
 
     # Button to toggle chat (invisible, triggered by icon)
-    if st.button("💬", key="chat-toggle-button", label_visibility="collapsed"):
+    if st.button("💬", key="chat-toggle-button"):
         st.session_state.chat_open = not st.session_state.chat_open
 
     # Chatbot icon (fixed at bottom right)
