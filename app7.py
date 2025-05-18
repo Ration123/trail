@@ -1,8 +1,9 @@
 import streamlit as st
 
 def chatbot_app():
-    # Tamil Nadu logo icon URL (small image hosted on GitHub)
+    # Tamil Nadu logo icon URL
     tamilnadu_icon_url = "https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png"
+    mic_icon_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Microphone_icon.svg/2048px-Microphone_icon.svg.png"  # Replace with your preferred mic icon
 
     # Initialize session state
     if "chat_open" not in st.session_state:
@@ -31,26 +32,29 @@ def chatbot_app():
             return "Sorry, I didn't understand that. Please ask something else."
 
     # --- Custom CSS ---
-    st.markdown("""
+    st.markdown(f"""
         <style>
-        .chat-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-image: url('""" + tamilnadu_icon_url + """');
-            background-size: cover;
-            background-position: center;
-            border: none;
+        .help-bot-container {{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }}
+        .mic-icon {{
+            width: 40px;
+            height: 40px;
+            margin-top: 5px;
             cursor: pointer;
-            z-index: 9999;
-        }
-        .chat-box {
+        }}
+        .help-label {{
+            font-size: 12px;
+            color: #444;
+            text-align: center;
+        }}
+        .chat-box {{
             position: fixed;
-            bottom: 80px;
-            right: 20px;
+            top: 120px;
+            left: 20px;
             width: 320px;
             max-height: 400px;
             background: #f9f9f9;
@@ -62,8 +66,8 @@ def chatbot_app():
             z-index: 9998;
             display: flex;
             flex-direction: column;
-        }
-        .chat-message-user {
+        }}
+        .chat-message-user {{
             background-color: #0084ff;
             color: white;
             padding: 8px 12px;
@@ -72,8 +76,8 @@ def chatbot_app():
             align-self: flex-end;
             max-width: 80%;
             word-wrap: break-word;
-        }
-        .chat-message-bot {
+        }}
+        .chat-message-bot {{
             background-color: #e5e5ea;
             color: black;
             padding: 8px 12px;
@@ -82,21 +86,30 @@ def chatbot_app():
             align-self: flex-start;
             max-width: 80%;
             word-wrap: break-word;
-        }
+        }}
         </style>
     """, unsafe_allow_html=True)
 
-    # Hidden button to toggle chat
+    # --- Top Row Layout ---
+    col1, col2 = st.columns([1, 6])
+    with col1:
+        st.image(tamilnadu_icon_url, width=80)
+        st.markdown(f"""
+            <div class="help-bot-container">
+                <img class="mic-icon" src="{mic_icon_url}" onclick="document.querySelector('button[kind=primary]').click()" />
+                <div class="help-label">HELP BOT</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.title("Tamil Nadu Ration Shop Portal")
+
+    # Toggle button (hidden)
     chat_toggle = st.button(" ", key="toggle", help="Toggle Chatbot")
     if chat_toggle:
         st.session_state.chat_open = not st.session_state.chat_open
 
-    # Floating chatbot icon
-    st.markdown(f"""
-        <div class="chat-button" onclick="document.querySelector('button[kind=primary]').click()"></div>
-    """, unsafe_allow_html=True)
-
-    # Show chat UI if open
+    # Chat Window
     if st.session_state.chat_open:
         st.markdown('<div class="chat-box">', unsafe_allow_html=True)
 
@@ -105,12 +118,12 @@ def chatbot_app():
             role_class = "chat-message-user" if chat["sender"] == "user" else "chat-message-bot"
             st.markdown(f'<div class="{role_class}">{chat["message"]}</div>', unsafe_allow_html=True)
 
-        # Chat input
-        user_input = st.selectbox("Ask something...", ["", "How to check stock?", "How to login as user?", "How to place order?", "How to submit grievance?"], key="chat_select")
-        if user_input and user_input.strip() != "":
-            st.session_state.chat_history.append({"sender": "user", "message": user_input})
-            reply = get_bot_response(user_input)
+        # Dropdown for questions (no floating input at bottom)
+        question = st.selectbox("Quick Help", ["", "How to check stock?", "How to login as user?", "How to place order?", "How to submit grievance?"], key="chat_select")
+        if question and question.strip() != "":
+            st.session_state.chat_history.append({"sender": "user", "message": question})
+            reply = get_bot_response(question)
             st.session_state.chat_history.append({"sender": "bot", "message": reply})
-              # Clear input by rerunning
+            st.experimental_rerun()
 
         st.markdown('</div>', unsafe_allow_html=True)
