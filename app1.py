@@ -28,9 +28,14 @@ if not firebase_admin._apps:
 def app(lang_toggle):
     t = get_translator(lang_toggle)
     
-    st.header(t("Real-Time Stock"))
-    ref = db.reference("/level")
-    level = ref.get()
+    all_users = db.reference("/").get()
+    rice_level = 0
+    
+    if  "level" in all_users.items():
+            rice_level = all_user["level"]
+            break
+    else:
+        print("ERROR")
     # === Stock Availability Section ===
     shop = st.selectbox(t("Select Shop"), [
         t("Shop 101 - Chennai"), 
@@ -40,7 +45,7 @@ def app(lang_toggle):
     
     # Dummy stock data
     stock_data = {
-        t("Shop 101 - Chennai"): {"Rice": level, "Sugar": 0, "Wheat": 0},
+        t("Shop 101 - Chennai"): {"Rice": rice_level, "Sugar": 0, "Wheat": 0},
         t("Shop 102 - Madurai"): {"Rice": 0, "Sugar": 0, "Wheat": 0},
         t("Shop 103 - Coimbatore"): {"Rice": 0, "Sugar": 0, "Wheat": 0},
     }
