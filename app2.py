@@ -30,86 +30,46 @@ def get_user_uid(username, password):
             return uid
     return None
 
+# Main app
 def app(lang_toggle):
     set_background()
     t = get_translator(lang_toggle)
     st.title(t("Ration Ordering Portal"))
 
-    # Initialize session state
+    # Session initialization
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
         st.session_state.uid = ""
         st.session_state.username = ""
         st.session_state.user_data = {}
-        st.session_state.is_admin = False
-        st.session_state.role = "User"
 
-    # Role selection
-    st.markdown("### 🔐 Select Login Type")
-    role = st.radio("Login as:", ["User", "Admin"], horizontal=True, index=0)
-    st.session_state.role = role
-
-    # Login interface
+    # Login form
     if not st.session_state.logged_in:
         username = st.text_input(t("Username"))
         password = st.text_input(t("Password"), type="password")
         if st.button(t("Login")):
-            if role == "Admin":
-                if username == "admin" and password == "0000":
-                    st.session_state.logged_in = True
-                    st.session_state.is_admin = True
-                    st.success(t("Welcome, Admin!"))
-                
-                else:
-                    st.error(t("Invalid admin credentials."))
+            uid = get_user_uid(username, password)
+            if uid:
+                user_ref = db.reference(f"/{uid}")
+                user_data = user_ref.get()
+                st.session_state.logged_in = True
+                st.session_state.uid = uid
+                st.session_state.username = username
+                st.session_state.user_data = user_data
+                st.success(f"{t('Welcome')}, {username}!")
             else:
-                uid = get_user_uid(username, password)
-                if uid:
-                    user_ref = db.reference(f"/{uid}")
-                    user_data = user_ref.get()
-                    st.session_state.logged_in = True
-                    st.session_state.uid = uid
-                    st.session_state.username = username
-                    st.session_state.user_data = user_data
-                    st.session_state.is_admin = False
-                    st.success(f"{t('Welcome')}, {username}!")
-                    
-                else:
-                    st.error(t("Invalid username or password."))
-        return  # Wait for login to complete
+                st.error(t("Invalid username or password."))
+        return  # Stop here until login successful
 
-    # Logout button
-    if st.button(t("Logout")):
-        st.session_state.clear()
-        
-
-    # Admin dashboard
-    if st.session_state.get("is_admin", False):
-        st.header(t("Admin Dashboard"))
-        ref = db.reference("/")
-        all_data = ref.get()
-        for uid, user in all_data.items():
-            st.subheader(f"🧑 {user.get('Username', 'N/A')}")
-            st.write(f"🔑 UID: {uid}")
-            st.write(f"🏬 Shop: {user.get('Shop')}")
-            st.write(f"📦 Product: {user.get('product')}")
-            st.write(f"📏 Quantity: {user.get('quantity')}g")
-            st.write(f"💸 Transaction ID: {user.get('transaction_id')}")
-            st.write(f"✅ Bill Placed: {user.get('Bill')}")
-            st.markdown("---")
-        return
-
-    # Normal user dashboard
+    # After login
     user_data = st.session_state.user_data
     user_ref = db.reference(f"/{st.session_state.uid}")
 
-    st.write(f"🏬 **{t('Shop Number')}**: {user_data.get('Shop')}")
-
     if user_data.get("Bill"):
         st.success("✅ " + t("Order already placed!"))
-        st.write(f"📦 **{t('Product')}**: {user_data.get('product')}")
-        st.write(f"📏 **{t('Quantity')}**: {user_data.get('quantity')}g")
-        st.write(f"💸 **{t('Transaction ID')}**: {user_data.get('transaction_id')}")
+        st.write(f"**{t('Product')}**: {user_data.get('product')}")
+        st.write(f"**{t('Quantity')}**: {user_data.get('quantity')}g")
+        st.write(f"**{t('Transaction ID')}**: {user_data.get('transaction_id')}")
     else:
         st.subheader("🛒 " + t("Place Your Order"))
         product = st.selectbox(t("Select Product"), [t("Rice")])
@@ -137,3 +97,6 @@ def app(lang_toggle):
                 })
                 st.success("✅ " + t("Order placed successfully!"))
                 st.session_state.user_data = user_ref.get()
+
+    # Provide language toggle value here, e.g. 'en' or 'ta'
+
