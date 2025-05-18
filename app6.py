@@ -39,13 +39,23 @@ def admin_login():
         else:
             st.error("Invalid username or password")
 
-def show_admin_dashboard():
-    st.header("Admin Dashboard")
-    # For example, show all user orders from Firebase
+def show_admin_dashboard(t):
+    st.header(t["dashboard"])
     ref = db.reference('/')
     all_data = ref.get()
 
-    st.write("Firebase Data:")
+    st.write(t["firebase_data"])
     st.json(all_data)
 
+def app(lang_toggle):
+    set_background()
+    t = get_translator(lang_toggle)
+    admin_login()
+
+    if login_btn:
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            st.success(t["success"])
+            show_admin_dashboard(t)
+        else:
+            st.error(t["error"])
     # Add more admin controls here as needed
