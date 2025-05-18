@@ -39,12 +39,12 @@ def app(lang_toggle):
 
     st.title(t("admin_login_title"))
 
-    username = st.text_input(t("username_label"))
-    password = st.text_input(t("password_label"), type="password")
+    username = st.text_input(t("Adminname"))
+    password = st.text_input(t("password"), type="password")
     login_btn = st.button(t("login_button"))
 
     if login_btn:
-        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        if username == "ADMIN" and password == "0000":
             st.success(t("success"))
             show_admin_dashboard(t)
         else:
