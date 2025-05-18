@@ -1,7 +1,7 @@
 import streamlit as st
 
 def chatbot_app():
-    # Tamil Nadu logo icon URL
+    # Tamil Nadu logo URL (raw githubusercontent link)
     tamilnadu_icon_url = "https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png"
 
     if "chat_open" not in st.session_state:
@@ -28,36 +28,32 @@ def chatbot_app():
         else:
             return "Sorry, I didn't understand that. Please ask something else."
 
-    # Custom CSS + JS for draggable chat box + button fixed bottom right
-    st.markdown(f"""
-    <style>
-        /* HELP BOT button fixed bottom right */
-        #help-bot-button {{
+    # Fixed bottom right HELP BOT button with image + text using st.button
+    st.markdown(
+        """
+        <style>
+        .fixed-helpbot {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #0084ff;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-weight: bold;
-            cursor: pointer;
+            z-index: 9999;
             display: flex;
             align-items: center;
             gap: 8px;
-            z-index: 10000;
+            background-color: #0084ff;
+            border-radius: 30px;
+            padding: 8px 16px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             user-select: none;
-        }}
-        #help-bot-button img {{
+        }
+        .fixed-helpbot img {
             height: 24px;
             width: 24px;
-            object-fit: contain;
-        }}
-
-        /* Draggable chat box */
-        #chat-box {{
+        }
+        .chat-box-container {
             position: fixed;
             bottom: 70px;
             right: 20px;
@@ -70,23 +66,15 @@ def chatbot_app():
             overflow-y: auto;
             font-family: Arial, sans-serif;
             z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            user-select: none;
-        }}
-
-        /* Header for drag */
-        #chat-header {{
+        }
+        .chat-header {
             background-color: #0084ff;
             color: white;
             padding: 8px 12px;
             border-radius: 8px 8px 0 0;
-            cursor: move;
             font-weight: bold;
-        }}
-
-        /* Chat messages */
-        .chat-message-user {{
+        }
+        .chat-message-user {
             background-color: #0084ff;
             color: white;
             padding: 8px 12px;
@@ -95,8 +83,8 @@ def chatbot_app():
             align-self: flex-end;
             max-width: 80%;
             word-wrap: break-word;
-        }}
-        .chat-message-bot {{
+        }
+        .chat-message-bot {
             background-color: #e5e5ea;
             color: black;
             padding: 8px 12px;
@@ -105,121 +93,62 @@ def chatbot_app():
             align-self: flex-start;
             max-width: 80%;
             word-wrap: break-word;
-        }}
-    </style>
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    <button id="help-bot-button" title="Toggle Help Bot" aria-label="Toggle Help Bot">
-        <img src="{tamilnadu_icon_url}" alt="TN Logo" />
-        HELP BOT
-    </button>
+    # Create a container for fixed bottom right HELP BOT button
+    btn_container = st.empty()
+    with btn_container.container():
+        # Use HTML inside streamlit.button is not possible, so use st.markdown clickable div
+        clicked = st.button("HELP BOT", key="helpbot_button")
 
-    <div id="chat-box" style="display:none;">
-        <div id="chat-header">Help Bot</div>
-        <div id="chat-content"></div>
-        <div id="chat-input-area" style="margin-top:8px;">
-            <select id="chat-select" style="width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #ccc;">
-                <option value="">Quick Help</option>
-                <option value="How to check stock?">How to check stock?</option>
-                <option value="How to login as user?">How to login as user?</option>
-                <option value="How to place order?">How to place order?</option>
-                <option value="How to submit grievance?">How to submit grievance?</option>
-            </select>
-            <button id="chat-send" style="margin-top:6px; width: 100%; padding: 6px; background:#0084ff; color:white; border:none; border-radius:6px; cursor:pointer;">Ask</button>
-        </div>
-    </div>
+    # Override button style with fixed position + icon + text via markdown hack
+    # So instead, create the button as clickable div in markdown and detect clicks by rerun?
+    # Streamlit can't capture clicks on markdown div, so fall back to st.button but fixed by CSS.
 
-    <script>
-        const btn = document.getElementById("help-bot-button");
-        const chatBox = document.getElementById("chat-box");
-        const chatHeader = document.getElementById("chat-header");
-        const chatContent = document.getElementById("chat-content");
-        const chatSelect = document.getElementById("chat-select");
-        const chatSend = document.getElementById("chat-send");
+    # Workaround: Use the "fixed-helpbot" CSS class with st.markdown + st.button invisibly overlayed?
 
-        // Toggle chat box display
-        btn.onclick = () => {{
-            if (chatBox.style.display === "none") {{
-                chatBox.style.display = "flex";
-            }} else {{
-                chatBox.style.display = "none";
-            }}
-        }};
+    # We'll do a hack: Show the button but overlay the text and icon fixed at bottom right
 
-        // Simple bot responses in JS (mirror Python logic)
-        function getBotResponse(msg) {{
-            msg = msg.toLowerCase();
-            if (msg.includes("stock")) {{
-                return "You can check stock availability in the 'Stock Availability' section.";
-            }} else if (msg.includes("login") && msg.includes("user")) {{
-                return "User Login lets you access your personal ration account.";
-            }} else if (msg.includes("login") && msg.includes("admin")) {{
-                return "Admin Login is for authorized personnel to manage the portal.";
-            }} else if (msg.includes("order")) {{
-                return "Place orders after logging in as a user.";
-            }} else if (msg.includes("grievance") || msg.includes("complaint")) {{
-                return "Submit complaints in the 'Grievance' section.";
-            }} else if (msg.includes("language")) {{
-                return "Switch language using the toggle in the sidebar.";
-            }} else if (msg.includes("contact")) {{
-                return "Contact details are under the 'Contact' section.";
-            }} else {{
-                return "Sorry, I didn't understand that. Please ask something else.";
-            }}
-        }}
+    # Show fixed HELP BOT button manually with icon + text in markdown + handle click with st.button invisible
+    # To detect click in st.button we can do like this:
 
-        // Add message to chat window
-        function addMessage(sender, message) {{
-            const div = document.createElement("div");
-            div.className = sender === "user" ? "chat-message-user" : "chat-message-bot";
-            div.textContent = message;
-            chatContent.appendChild(div);
-            chatContent.scrollTop = chatContent.scrollHeight;
-        }}
+    # So better to do:
+    # 1) Hide default button style with CSS
+    # 2) Show custom div fixed bottom right as clickable label
 
-        // Send message handler
-        chatSend.onclick = () => {{
-            const question = chatSelect.value;
-            if (!question) return;
-            addMessage("user", question);
-            const reply = getBotResponse(question);
-            setTimeout(() => {{
-                addMessage("bot", reply);
-            }}, 300);
-            chatSelect.value = "";
-        }};
+    # But Streamlit doesn't allow that. So let's just do a fixed button with text only.
 
-        // Drag functionality
-        let isDragging = false;
-        let offsetX, offsetY;
+    # Toggle chat box visibility on button click
+    if clicked:
+        st.session_state.chat_open = not st.session_state.chat_open
 
-        chatHeader.addEventListener("mousedown", function(e) {{
-            isDragging = true;
-            offsetX = e.clientX - chatBox.getBoundingClientRect().left;
-            offsetY = e.clientY - chatBox.getBoundingClientRect().top;
-            document.body.style.userSelect = "none";
-        }});
+    # Show chat box if open
+    if st.session_state.chat_open:
+        chat_container = st.container()
 
-        document.addEventListener("mouseup", function() {{
-            isDragging = false;
-            document.body.style.userSelect = "auto";
-        }});
+        with chat_container:
+            st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
+            st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
 
-        document.addEventListener("mousemove", function(e) {{
-            if (!isDragging) return;
-            let left = e.clientX - offsetX;
-            let top = e.clientY - offsetY;
+            # Show chat messages
+            for sender, message in st.session_state.chat_history:
+                cls = "chat-message-user" if sender == "user" else "chat-message-bot"
+                st.markdown(f'<div class="{cls}">{message}</div>', unsafe_allow_html=True)
 
-            // Clamp position within viewport
-            left = Math.min(window.innerWidth - chatBox.offsetWidth, Math.max(0, left));
-            top = Math.min(window.innerHeight - chatBox.offsetHeight, Math.max(0, top));
+            # Input text box and button
+            user_input = st.text_input("Your question:", key="chat_input", value="", placeholder="Ask me anything...")
 
-            chatBox.style.left = left + "px";
-            chatBox.style.top = top + "px";
-            chatBox.style.bottom = "auto";
-            chatBox.style.right = "auto";
-        }});
-    </script>
-    """, unsafe_allow_html=True)
+            if st.button("Send", key="send_button"):
+                if user_input.strip():
+                    st.session_state.chat_history.append(("user", user_input))
+                    response = get_bot_response(user_input)
+                    st.session_state.chat_history.append(("bot", response))
+                    st.experimental_rerun()
 
+            st.markdown("</div>", unsafe_allow_html=True)
 
 chatbot_app()
