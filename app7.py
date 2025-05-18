@@ -88,7 +88,7 @@ def chatbot_app():
 
  st.markdown(
     f"""
-    <img src="data:image/png;base64,{st.experimental_get_query_params().get('image', [''])[0]}" 
+    <img src="data:image/png;base64,{st.query_params().get('image', [''])[0]}" 
     class="chat-button" alt="Chat Bot" 
     onclick="document.querySelector('button[kind=primary]').click()"
     style="background-image: url('{tamilnadu_icon}'); background-size: cover;">
