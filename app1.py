@@ -29,7 +29,7 @@ def app(lang_toggle):
     t = get_translator(lang_toggle)
     
     ref = db.reference("/level")
-    level = ref.get()+100
+    level = ref.get()
 
     st.title("📦 Stock Level")
     st.write(f"**Current Level:** {level}")
