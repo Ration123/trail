@@ -30,7 +30,7 @@ def app(lang_toggle):
     
     ref = db.reference("/level")
     level = ref.get()
-
+    st.title("📦Realtime stock monitoring")
     
     
     # === Stock Availability Section ===
