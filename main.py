@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from utils import set_background, show_title_image, get_translator
+from utils import set_background, show_title_image, get_translator,set_responsive_style
 import app1
 import app2
 import app3
