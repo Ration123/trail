@@ -113,34 +113,16 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# HELP BOT button with logo
-clicked = st.button(
-    label=(
-        f'<img src="{tamilnadu_icon_url}" alt="logo"> HELP BOT'
-    ),
+# Single HELP BOT toggle button (unique key)
+if st.button(
+    label=f'HELP BOT <img src="{tamilnadu_icon_url}" height="24" width="24">',
     key="help_bot_button",
-    help="Click to open the chatbot",
-    on_click=None,
-)
-
-# To style the button with the image, we use markdown + a dummy button below for click detection
-# Streamlit buttons don't support HTML so workaround is needed
-# So we do a custom clickable div:
-if st.button("Toggle Help Bot", key="dummy_button", help="Toggle Help Bot visibility", on_click=None):
+    help="Click to open/close the chatbot",
+):
     st.session_state.chat_open = not st.session_state.chat_open
 
-# Alternative approach:
-# So instead of using st.button with image, use st.markdown with clickable div:
-st.markdown(
-    f"""
-    <div class="fixed-helpbot" onclick="document.querySelector('button[kind=secondary]').click()">
-        <img src="{tamilnadu_icon_url}" alt="logo" />
-        HELP BOT
-    </div>
-    """,
-    unsafe_allow_html=True,)
- 
- if st.session_state.chat_open:
+# Show chatbot window only if chat_open is True
+if st.session_state.chat_open:
     st.markdown('<div class="chat-box-container">', unsafe_allow_html=True)
     st.markdown('<div class="chat-header">Help Bot</div>', unsafe_allow_html=True)
 
@@ -160,7 +142,7 @@ st.markdown(
         st.session_state.chat_history.append(("bot", answer))
         # Reset dropdown to default after response
         st.session_state.chat_question_select = questions[0]
-        # Rerun to refresh chat window
+        # Force rerun to refresh chat window with new history
         
 
     st.markdown("</div>", unsafe_allow_html=True)
