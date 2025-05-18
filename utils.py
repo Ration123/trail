@@ -97,9 +97,26 @@ def set_background():
         }
         </style>
     """, unsafe_allow_html=True)
-
 def show_title_image():
-    st.image("https://raw.githubusercontent.com/Ration123/trail/main/title.jpg", use_container_width=True)
+    st.markdown("""
+        <style>
+            .responsive-image {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 100%;
+                height: auto;
+                border-radius: 12px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(
+        f"<img src='https://raw.githubusercontent.com/Ration123/trail/main/title.jpg' class='responsive-image'>",
+        unsafe_allow_html=True
+    )
+
 
 def get_translator(lang):
     translator = GoogleTranslator(source='en', target='ta') if lang else None
