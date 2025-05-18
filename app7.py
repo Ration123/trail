@@ -39,28 +39,42 @@ def chatbot_app():
     if "reset_selectbox" not in st.session_state:
         st.session_state.reset_selectbox = False
 
-    # Fixed-position HELP BOT button with Streamlit button
-    st.markdown("""
+    # Fixed-position button style and logic
+    st.markdown(f"""
         <style>
-        .helpbot-container {
+        .helpbot-container {{
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 1000;
-        }
+        }}
+        .helpbot-button {{
+            background-color: #1e1e2f;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }}
+        .helpbot-button img {{
+            height: 24px;
+            margin-right: 8px;
+        }}
         </style>
         <div class="helpbot-container">
+            <button class="helpbot-button" onclick="window.location.reload();">
+                <img src="{tamilnadu_icon_url}" alt="Logo"> HELP BOT
+            </button>
+        </div>
     """, unsafe_allow_html=True)
 
-    helpbot_clicked = st.button("🛎️ HELP BOT", key="fixed_helpbot")
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    if helpbot_clicked:
+    # Logic toggle on rerun (workaround: click resets page and toggles state)
+    if st.button("Toggle Help Bot", key="toggle_helpbot"):
         st.session_state.chat_open = not st.session_state.chat_open
-        
 
-    # If HELP BOT is open, show the chat
     if st.session_state.chat_open:
         selected_question = st.selectbox("Choose your question:", options=questions, index=0, key="chat_question_select")
         if selected_question != questions[0]:
