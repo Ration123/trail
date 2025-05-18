@@ -40,36 +40,45 @@ def chatbot_app():
         st.session_state.reset_selectbox = False
 
     # Fixed-position button style and logic
+    # STYLE + HELP BOT FIXED BUTTON ON BOTTOM-RIGHT
     st.markdown(f"""
-        <style>
-        .helpbot-container {{
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }}
-        .helpbot-button {{
-            background-color: #1e1e2f;
-            color: white;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }}
-        .helpbot-button img {{
-            height: 24px;
-            margin-right: 8px;
-        }}
-        </style>
-        <div class="helpbot-container">
-            <button class="helpbot-button" onclick="window.location.reload();">
+     <style>
+    .helpbot-container {{
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+    }}
+    .helpbot-button {{
+        background-color: #1e1e2f;
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+    }}
+    .helpbot-button img {{
+        height: 24px;
+        margin-right: 8px;
+    }}
+    .streamlit-expander, .stButton > button {{
+        z-index: 1;
+        position: relative;
+    }}
+    </style>
+    <div class="helpbot-container">
+        <form action="" method="post">
+            <button class="helpbot-button" type="submit" name="helpbot_toggle">
                 <img src="{tamilnadu_icon_url}" alt="Logo"> HELP BOT
             </button>
-        </div>
-    """, unsafe_allow_html=True)
+        </form>
+    </div>
+""", unsafe_allow_html=True)
+
 
     # Logic toggle on rerun (workaround: click resets page and toggles state)
     if st.button("Toggle Help Bot", key="toggle_helpbot"):
