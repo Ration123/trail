@@ -59,8 +59,7 @@ def app(lang_toggle):
                 st.success(f"{t('Welcome')}, {username}!")
             else:
                 st.error(t("Invalid username or password."))
-        return  # Stop here until login successful
-
+        return  # Stop here until login successfu
     # After login
     user_data = st.session_state.user_data
     user_ref = db.reference(f"/{st.session_state.uid}")
