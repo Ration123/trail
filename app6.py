@@ -52,9 +52,9 @@ def app(lang_toggle):
 
     st.title(t("admin_login_title"))
 
-    username = st.text_input(t("Adminname"))
+    username = st.text_input(t("Admin name"))
     password = st.text_input(t("password"), type="password")
-    login_btn = st.button(t("login_button"))
+    login_btn = st.button(t("Admin_login"))
 
     if login_btn:
         if username == "ADMIN" and password == "0000":
