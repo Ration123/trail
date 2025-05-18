@@ -25,21 +25,6 @@ if not firebase_admin._apps:
 ADMIN_USERNAME = "ADMIN"
 ADMIN_PASSWORD = "0000"
 
-def admin_login():
-    st.title("Admin Login")
-
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    login_btn = st.button("Login")
-
-    if login_btn:
-        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
-            st.success("Logged in successfully as admin!")
-            # Call your admin dashboard function here or show admin content
-            show_admin_dashboard()
-        else:
-            st.error("Invalid username or password")
-
 def show_admin_dashboard(t):
     st.header(t["dashboard"])
     ref = db.reference('/')
@@ -51,7 +36,12 @@ def show_admin_dashboard(t):
 def app(lang_toggle):
     set_background()
     t = get_translator(lang_toggle)
-    admin_login()
+
+    st.title(t["admin_login_title"])
+
+    username = st.text_input(t["username_label"])
+    password = st.text_input(t["password_label"], type="password")
+    login_btn = st.button(t["login_button"])
 
     if login_btn:
         if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
@@ -59,4 +49,3 @@ def app(lang_toggle):
             show_admin_dashboard(t)
         else:
             st.error(t["error"])
-    # Add more admin controls here as needed
