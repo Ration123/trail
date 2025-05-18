@@ -33,7 +33,7 @@ def app(lang_toggle):
     
     if  "level" in all_users.items():
             rice_level = all_user["level"]
-            break
+            
     else:
         print("ERROR")
     # === Stock Availability Section ===
