@@ -1,6 +1,6 @@
 import streamlit as st
 
-def new_registration_app():
+def app(lang_toggle):
     st.set_page_config(page_title="New Ration Shop Registration", page_icon="📝")
 
     st.title("📝 New Ration Shop Registration")
