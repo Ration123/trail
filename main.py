@@ -76,8 +76,9 @@ elif selected_option == "📬 Grievance":
 
 elif selected_option == "🌐 Language":
     app4.app(lang_toggle)
-elif selected_option=="📝 New Registration":
+elif selected_option == "📝 New Registration":
     app8.app(lang_toggle)
+
 
 elif selected_option == "📞 Contact":
     # Contact page content
