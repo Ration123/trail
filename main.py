@@ -27,7 +27,7 @@ with st.sidebar:
     "📬 Grievance",
     "🌐 Language",
     "📝 New Registration",     # <-- 7th
-    "📞 Contactt"               # <-- 8th
+    "📞 Contact"               # <-- 8th
 ],
         icons = [
     "house-door", 
