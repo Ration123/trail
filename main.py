@@ -23,21 +23,22 @@ with st.sidebar:
     "🏠 Home",
     "📊 Stock Availability",
     "🔐 User Login",
-    "🔑 Admin Login",          # <-- added this option
+    "🔑 Admin Login",
     "📬 Grievance",
     "🌐 Language",
-           "📝 New Registration" ,
-    "📞 Contact"
-              
+    "📝 New Registration",     # <-- 7th
+    "📞 Contact"               # <-- 8th
 ],
-        icons=[
-            "house-door", 
-            "bar-chart-line", 
-            "lock", 
-            "envelope", 
-            "globe",
-            "telephone"
-        ],
+        icons = [
+    "house-door", 
+    "bar-chart-line", 
+    "lock", 
+    "key",               # Icon for Admin Login
+    "envelope", 
+    "globe",
+    "person-plus",       # Icon for New Registration
+    "telephone"
+],
         menu_icon="gear-fill",
         default_index=0,
         orientation="vertical",
