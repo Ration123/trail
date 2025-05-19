@@ -26,9 +26,9 @@ with st.sidebar:
     "🔑 Admin Login",          # <-- added this option
     "📬 Grievance",
     "🌐 Language",
-    "📞 Contact", 
-    "📝 New Registration"
-           
+           "📝 New Registration" ,
+    "📞 Contact"
+              
 ],
         icons=[
             "house-door", 
