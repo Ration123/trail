@@ -7,6 +7,7 @@ import app3
 import app4
 import app6
 import app7
+import app8
 # === Setup ===
 set_background()
 set_responsive_style()
@@ -25,7 +26,9 @@ with st.sidebar:
     "🔑 Admin Login",          # <-- added this option
     "📬 Grievance",
     "🌐 Language",
-    "📞 Contact"
+    "📞 Contact", 
+    “📝 New Registration”
+           
 ],
         icons=[
             "house-door", 
@@ -72,6 +75,8 @@ elif selected_option == "📬 Grievance":
 
 elif selected_option == "🌐 Language":
     app4.app(lang_toggle)
+elif selected_option==“📝 New Registration”:
+    app7.app(lang_toggle)
 
 elif selected_option == "📞 Contact":
     # Contact page content
