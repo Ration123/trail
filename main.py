@@ -27,7 +27,7 @@ with st.sidebar:
     "📬 Grievance",
     "🌐 Language",
     "📞 Contact", 
-    “📝 New Registration”
+    "📝 New Registration"
            
 ],
         icons=[
@@ -75,7 +75,7 @@ elif selected_option == "📬 Grievance":
 
 elif selected_option == "🌐 Language":
     app4.app(lang_toggle)
-elif selected_option==“📝 New Registration”:
+elif selected_option=="📝 New Registration":
     app7.app(lang_toggle)
 
 elif selected_option == "📞 Contact":
