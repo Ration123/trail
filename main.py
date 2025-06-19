@@ -62,6 +62,7 @@ if selected_option == "🏠 Home":
         <li>{t('- Place orders & track status')}</li>
     </ul>
     """, unsafe_allow_html=True)
+    app7.chatbot_app()
 
 elif selected_option == "📊 Stock Availability":
     app1.app(lang_toggle)
@@ -98,7 +99,7 @@ elif selected_option == "📞 Contact":
             {t('📧 Email:')} <a href='mailto:{email}' style='color:#1f4e79;'>{email}</a>
         </p>
     """, unsafe_allow_html=True)
-app7.chatbot_app()
+
 
 
 
