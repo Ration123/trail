@@ -1,14 +1,6 @@
 import streamlit as st
 st.set_page_config(layout="wide", initial_sidebar_state="expanded")
 
-# Hide the sidebar collapse button to prevent user from hiding the sidebar
-st.markdown("""
-    <style>
-        [data-testid="collapsedControl"] {
-            display: none;
-        }
-    </style>
-""", unsafe_allow_html=True)
 
 from streamlit_option_menu import option_menu
 from utils import set_background, show_title_image, get_translator,set_responsive_style
@@ -111,35 +103,8 @@ elif selected_option == "📞 Contact":
             {t('📧 Email:')} <a href='mailto:{email}' style='color:#1f4e79;'>{email}</a>
         </p>
     """, unsafe_allow_html=True)
-st.markdown("""
-    <style>
-        #sidebar-toggle-btn {
-            position: fixed;
-            top: 12px;
-            left: 12px;
-            z-index: 1001;
-            background-color: #1f4e79;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-    </style>
-    <button id="sidebar-toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
 
-    <script>
-        function toggleSidebar() {
-            const sidebarToggle = parent.document.querySelector('[data-testid="collapsedControl"]');
-            if (sidebarToggle) {
-                sidebarToggle.click();  // Simulate click to toggle sidebar
-            }
-        }
-    </script>
-""", unsafe_allow_html=True)
-
+ app7.chatbot_app()
 
 
 
