@@ -1,13 +1,15 @@
 import streamlit as st
-if st.query_params.get("show_sidebar", "false") == "true":
-    st.set_page_config(layout="wide", initial_sidebar_state="expanded")
-else:
-    st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(layout="wide", initial_sidebar_state="expanded")
 
-# ✅ Menu button to expand sidebar on rerun
-if st.button("☰ Menu"):
-    st.query_params["show_sidebar"] = "true"
-    st.rerun()
+# Prevent collapse by removing the collapse control via CSS
+st.markdown("""
+    <style>
+        [data-testid="collapsedControl"] {
+            display: none;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 from streamlit_option_menu import option_menu
 from utils import set_background, show_title_image, get_translator,set_responsive_style
 import app1
