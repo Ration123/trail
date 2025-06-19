@@ -1,8 +1,14 @@
 import streamlit as st
+query_params = st.experimental_get_query_params()
+if query_params.get("show_sidebar", ["false"])[0] == "true":
+    st.set_page_config(layout="wide", initial_sidebar_state="expanded")
+else:
+    st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
+
+# 👉 Now define your menu button (reruns and sets sidebar state)
 if st.button("☰ Menu"):
     st.experimental_set_query_params(show_sidebar="true")
     st.rerun()
-    st.set_page_config(layout="wide", initial_sidebar_state="expanded")
 from streamlit_option_menu import option_menu
 from utils import set_background, show_title_image, get_translator,set_responsive_style
 import app1
