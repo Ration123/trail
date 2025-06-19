@@ -2,8 +2,7 @@ import streamlit as st
 if st.button("☰ Menu"):
     st.experimental_set_query_params(show_sidebar="true")
     st.rerun()
-
-st.set_page_config(layout="wide", initial_sidebar_state="expanded")
+    st.set_page_config(layout="wide", initial_sidebar_state="expanded")
 from streamlit_option_menu import option_menu
 from utils import set_background, show_title_image, get_translator,set_responsive_style
 import app1
