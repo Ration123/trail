@@ -14,6 +14,7 @@ set_responsive_style()
 # Only ONE language toggle checkbox here
 lang_toggle = st.sidebar.checkbox("Switch to Tamil", key="lang_toggle_checkbox")
 t = get_translator(lang_toggle)
+st.set_page_config(layout="wide", initial_sidebar_state="expanded")
 
 # === Sidebar Option Menu ===
 with st.sidebar:
