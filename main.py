@@ -79,7 +79,6 @@ elif selected_option == "🌐 Language":
 elif selected_option == "📝 New Registration":
     app8.app(lang_toggle)
 
-
 elif selected_option == "📞 Contact":
     # Contact page content
     st.markdown(f"<h2 style='color:black; font-weight:900;'>{t('Contact Us')}</h2>", unsafe_allow_html=True)
