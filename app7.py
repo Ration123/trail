@@ -32,13 +32,13 @@ def chatbot_app():
         else:
             return "Sorry, I didn't understand that. Please select another question."
 
-    # Initialize states
+    # === Chatbot State Initialization ===
     if "chat_open" not in st.session_state:
         st.session_state.chat_open = False
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
-    # HELP BOT button (styled as shown in the screenshot)
+    # === Floating Button with Toggle (No form/refresh) ===
     st.markdown(f"""
         <style>
             .fixed-help-button {{
@@ -68,19 +68,24 @@ def chatbot_app():
             }}
         </style>
         <div class="fixed-help-button">
-            <form action="" method="get">
-                <button type="submit" name="toggle_helpbot_button">
-                    <img src="{tamilnadu_icon_url}" alt="Logo"> HELP BOT
-                </button>
-            </form>
+            <button onclick="document.dispatchEvent(new CustomEvent('toggle-chat'))">
+                <img src="{tamilnadu_icon_url}" alt="Logo"> HELP BOT
+            </button>
         </div>
+        <script>
+            const docEvent = new EventSource('/_stcore/events');
+            document.addEventListener('toggle-chat', function () {{
+                window.parent.postMessage({{ type: 'streamlit:rerunScript' }}, '*');
+                localStorage.setItem("chat_open", String(!{str(st.session_state.chat_open).lower()}));
+            }});
+        </script>
     """, unsafe_allow_html=True)
 
-    # Use st.query_params (updated API)
-    if "toggle_helpbot_button" in st.query_params:
-        st.session_state.chat_open = not st.session_state.chat_open
-        st.query_params.clear()  # Optional: clear URL query after toggle
+    # Fallback toggle for now — better to replace with Streamlit-native widget:
+    chat_toggle = st.checkbox("Show Help Bot", key="chat_toggle")
+    st.session_state.chat_open = chat_toggle
 
+    # === Chat UI ===
     if st.session_state.chat_open:
         st.markdown("### 🤖 Help Bot")
         selected_question = st.selectbox("Choose your question:", options=questions, index=0, key="chat_question_select")
@@ -98,6 +103,3 @@ def chatbot_app():
                 f'<div style="background-color:{color}; color:{text_color}; padding:8px; border-radius:12px; max-width:80%; margin:6px 0; word-wrap: break-word;">{msg}</div>',
                 unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-
-if __name__ == "__main__":
-    chatbot_app()
