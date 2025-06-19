@@ -119,10 +119,15 @@ st.markdown("""
         }
     </style>
     <button id="sidebar-toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
+
     <script>
         function toggleSidebar() {
-            let sidebar = parent.document.querySelector("section[data-testid='stSidebar']");
-            if (sidebar.style.transform === "translateX(-100%)") {
+            const sidebar = parent.document.querySelector('section[data-testid="stSidebar"]');
+            const root = parent.document.querySelector('body');
+
+            if (sidebar.style.display === "none") {
+                sidebar.style.display = "block";
+            } else if (getComputedStyle(sidebar).transform.includes("-100")) {
                 sidebar.style.transform = "translateX(0%)";
             } else {
                 sidebar.style.transform = "translateX(-100%)";
