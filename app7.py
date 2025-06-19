@@ -32,60 +32,38 @@ def chatbot_app():
         else:
             return "Sorry, I didn't understand that. Please select another question."
 
-    # === Chatbot State Initialization ===
+    # State initialization
     if "chat_open" not in st.session_state:
         st.session_state.chat_open = False
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
-    # === Floating Button with Toggle (No form/refresh) ===
-    st.markdown(f"""
+    # === Native Floating Button ===
+    st.markdown("""
         <style>
-            .fixed-help-button {{
+            div.stButton > button#helpbot-toggle {
                 position: fixed;
                 bottom: 20px;
                 right: 20px;
-                z-index: 9999;
-            }}
-            .fixed-help-button button {{
+                z-index: 1000;
                 background-color: #dc3545;
                 color: white;
-                padding: 10px 16px;
-                border: none;
-                border-radius: 10px;
-                font-size: 16px;
                 font-weight: bold;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                cursor: pointer;
-            }}
-            .fixed-help-button button:hover {{
-                background-color: #c82333;
-            }}
-            .fixed-help-button img {{
-                height: 24px;
-            }}
+                border-radius: 10px;
+                padding: 10px 20px;
+                font-size: 16px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            }
         </style>
-        <div class="fixed-help-button">
-            <button onclick="document.dispatchEvent(new CustomEvent('toggle-chat'))">
-                <img src="{tamilnadu_icon_url}" alt="Logo"> HELP BOT
-            </button>
-        </div>
-        <script>
-            const docEvent = new EventSource('/_stcore/events');
-            document.addEventListener('toggle-chat', function () {{
-                window.parent.postMessage({{ type: 'streamlit:rerunScript' }}, '*');
-                localStorage.setItem("chat_open", String(!{str(st.session_state.chat_open).lower()}));
-            }});
-        </script>
     """, unsafe_allow_html=True)
 
-    # Fallback toggle for now — better to replace with Streamlit-native widget:
-    chat_toggle = st.checkbox("Show Help Bot", key="chat_toggle")
-    st.session_state.chat_open = chat_toggle
+    # Create the toggle button using Streamlit (no refresh)
+    helpbot_clicked = st.button("HELP BOT", key="helpbot-toggle")
 
-    # === Chat UI ===
+    if helpbot_clicked:
+        st.session_state.chat_open = not st.session_state.chat_open
+
+    # === Chat Bot UI ===
     if st.session_state.chat_open:
         st.markdown("### 🤖 Help Bot")
         selected_question = st.selectbox("Choose your question:", options=questions, index=0, key="chat_question_select")
@@ -94,10 +72,10 @@ def chatbot_app():
             bot_reply = get_bot_response(selected_question)
             st.session_state.chat_history.append(("bot", bot_reply))
 
+        # Display chat history
         st.markdown('<div style="max-height: 300px; overflow-y: auto;">', unsafe_allow_html=True)
         for sender, msg in st.session_state.chat_history:
             color = "#0084ff" if sender == "user" else "#e5e5ea"
-            align = "right" if sender == "user" else "left"
             text_color = "white" if sender == "user" else "black"
             st.markdown(
                 f'<div style="background-color:{color}; color:{text_color}; padding:8px; border-radius:12px; max-width:80%; margin:6px 0; word-wrap: break-word;">{msg}</div>',
