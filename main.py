@@ -100,6 +100,35 @@ elif selected_option == "📞 Contact":
             {t('📧 Email:')} <a href='mailto:{email}' style='color:#1f4e79;'>{email}</a>
         </p>
     """, unsafe_allow_html=True)
+st.markdown("""
+    <style>
+        #sidebar-toggle-btn {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 1001;
+            background-color: #1f4e79;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+    <button id="sidebar-toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
+    <script>
+        function toggleSidebar() {
+            let sidebar = parent.document.querySelector("section[data-testid='stSidebar']");
+            if (sidebar.style.transform === "translateX(-100%)") {
+                sidebar.style.transform = "translateX(0%)";
+            } else {
+                sidebar.style.transform = "translateX(-100%)";
+            }
+        }
+    </script>
+""", unsafe_allow_html=True)
 
 
 
