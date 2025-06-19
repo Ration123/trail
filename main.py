@@ -122,15 +122,9 @@ st.markdown("""
 
     <script>
         function toggleSidebar() {
-            const sidebar = parent.document.querySelector('section[data-testid="stSidebar"]');
-            const root = parent.document.querySelector('body');
-
-            if (sidebar.style.display === "none") {
-                sidebar.style.display = "block";
-            } else if (getComputedStyle(sidebar).transform.includes("-100")) {
-                sidebar.style.transform = "translateX(0%)";
-            } else {
-                sidebar.style.transform = "translateX(-100%)";
+            const sidebarToggle = parent.document.querySelector('[data-testid="collapsedControl"]');
+            if (sidebarToggle) {
+                sidebarToggle.click();  // Simulate click to toggle sidebar
             }
         }
     </script>
