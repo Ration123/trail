@@ -1,7 +1,7 @@
 import streamlit as st
 st.set_page_config(layout="wide", initial_sidebar_state="expanded")
 
-# Prevent collapse by removing the collapse control via CSS
+# Hide the sidebar collapse button to prevent user from hiding the sidebar
 st.markdown("""
     <style>
         [data-testid="collapsedControl"] {
