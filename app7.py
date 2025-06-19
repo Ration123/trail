@@ -1,6 +1,7 @@
 import streamlit as st
 
 def chatbot_app():
+    tamilnadu_icon_url = "https://raw.githubusercontent.com/Ration123/trail/main/TamilNadu_Logo.svg.png"
     questions = [
         "Select a question...",
         "How to check stock availability?",
@@ -31,48 +32,72 @@ def chatbot_app():
         else:
             return "Sorry, I didn't understand that. Please select another question."
 
-    # State tracking
+    # Initialize states
     if "chat_open" not in st.session_state:
         st.session_state.chat_open = False
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
-    # Floating styled Streamlit button (no HTML form)
-    st.markdown("""
+    # HELP BOT button (styled as shown in the screenshot)
+    st.markdown(f"""
         <style>
-            div.stButton > button#helpbot-btn {
+            .fixed-help-button {{
                 position: fixed;
                 bottom: 20px;
                 right: 20px;
-                z-index: 1000;
+                z-index: 9999;
+            }}
+            .fixed-help-button button {{
                 background-color: #dc3545;
                 color: white;
-                font-weight: bold;
+                padding: 10px 16px;
+                border: none;
                 border-radius: 10px;
-                padding: 10px 20px;
                 font-size: 16px;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            }
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                cursor: pointer;
+            }}
+            .fixed-help-button button:hover {{
+                background-color: #c82333;
+            }}
+            .fixed-help-button img {{
+                height: 24px;
+            }}
         </style>
+        <div class="fixed-help-button">
+            <form action="" method="get">
+                <button type="submit" name="toggle_helpbot_button">
+                    <img src="{tamilnadu_icon_url}" alt="Logo"> HELP BOT
+                </button>
+            </form>
+        </div>
     """, unsafe_allow_html=True)
 
-    if st.button("HELP BOT", key="helpbot-btn"):
+    # Use st.query_params (updated API)
+    if "toggle_helpbot_button" in st.query_params:
         st.session_state.chat_open = not st.session_state.chat_open
+        st.query_params.clear()  # Optional: clear URL query after toggle
 
-    # Chat interface
     if st.session_state.chat_open:
         st.markdown("### 🤖 Help Bot")
-        selected_question = st.selectbox("Choose your question:", options=questions, index=0, key="chat_q")
+        selected_question = st.selectbox("Choose your question:", options=questions, index=0, key="chat_question_select")
         if selected_question != questions[0]:
             st.session_state.chat_history.append(("user", selected_question))
-            st.session_state.chat_history.append(("bot", get_bot_response(selected_question)))
+            bot_reply = get_bot_response(selected_question)
+            st.session_state.chat_history.append(("bot", bot_reply))
 
         st.markdown('<div style="max-height: 300px; overflow-y: auto;">', unsafe_allow_html=True)
         for sender, msg in st.session_state.chat_history:
             color = "#0084ff" if sender == "user" else "#e5e5ea"
+            align = "right" if sender == "user" else "left"
             text_color = "white" if sender == "user" else "black"
             st.markdown(
-                f'<div style="background-color:{color}; color:{text_color}; padding:8px; border-radius:12px; max-width:80%; margin:6px 0;">{msg}</div>',
-                unsafe_allow_html=True
-            )
+                f'<div style="background-color:{color}; color:{text_color}; padding:8px; border-radius:12px; max-width:80%; margin:6px 0; word-wrap: break-word;">{msg}</div>',
+                unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
+
+if __name__ == "__main__":
+    chatbot_app()
