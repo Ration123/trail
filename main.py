@@ -15,7 +15,9 @@ import app8
 set_background()
 set_responsive_style()
 # Only ONE language toggle checkbox here
-lang_toggle = st.sidebar.checkbox("Switch to Tamil", key="lang_toggle_checkbox")
+lang_toggle = st.toggle("Switch to Tamil", key="lang_toggle_main")
+
+
 t = get_translator(lang_toggle)
 
 
