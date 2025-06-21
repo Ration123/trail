@@ -20,42 +20,22 @@ t = get_translator(lang_toggle)
 
 
 # === Sidebar Option Menu ===
-with st.sidebar:
-    selected_option = option_menu(
-        menu_title="🛒 Tamil Nadu Ration Shop",
-       options = [
-    "🏠 Home",
-    "📊 Stock Availability",
-    "🔐 User Login",
-    "🔑 Admin Login",
-    "📬 Grievance",
-    "🌐 Language",
-    "📝 New Registration",     # <-- 7th
-    "📞 Contact"               # <-- 8th
-],
-        icons = [
-    "house-door", 
-    "bar-chart-line", 
-    "lock", 
-    "key",               # Icon for Admin Login
-    "envelope", 
-    "globe",
-    "person-plus",       # Icon for New Registration
-    "telephone"
-],
-        menu_icon="gear-fill",
-        default_index=0,
-        orientation="vertical",
-        styles={
-            "container": {"padding": "5!important", "background-color": "#1f4e79"},
-            "icon": {"color": "white", "font-size": "20px"},
-            "nav-link": {"color": "white", "font-size": "18px", "--hover-color": "#FFA500"},
-            "nav-link-selected": {"background-color": "#FFA500"},
-        }
-    )
+with st.container():
+    st.markdown("### ☰ Tamil Nadu Ration Shop Portal")
+    menu = st.selectbox("Menu", [
+        "🏠 Home",
+        "📊 Stock Availability",
+        "🔐 User Login",
+        "🔑 Admin Login",
+        "📬 Grievance",
+        "🌐 Language",
+        "📝 New Registration",
+        "📞 Contact"
+    ], label_visibility="collapsed")
+
 
 # === Main Area Routing ===
-if selected_option == "🏠 Home":
+if menu == "🏠 Home":
     show_title_image()
     st.markdown(f"<h1 style='color:black; font-weight:900;'>{t('Welcome to Tamil Nadu Ration Shop Portal')}</h1>", unsafe_allow_html=True)
     st.markdown(f"<p style='color:black; font-weight:900; font-size:18px;'>{t('This portal allows citizens to:')}</p>", unsafe_allow_html=True)
@@ -66,25 +46,25 @@ if selected_option == "🏠 Home":
         <li>{t('- Place orders & track status')}</li>
     </ul>
     """, unsafe_allow_html=True)
-    app7.chatbot_app()
+   
 
-elif selected_option == "📊 Stock Availability":
+elif menu == "📊 Stock Availability":
     app1.app(lang_toggle)
 
-elif selected_option == "🔐 User Login":
+elif menu == "🔐 User Login":
     app2.app(lang_toggle)
-elif selected_option == "🔑 Admin Login":
+elif menu == "🔑 Admin Login":
     app6.app(lang_toggle) 
 
-elif selected_option == "📬 Grievance":
+elif menu == "📬 Grievance":
     app3.app(lang_toggle)
 
-elif selected_option == "🌐 Language":
+elif menu == "🌐 Language":
     app4.app(lang_toggle)
-elif selected_option == "📝 New Registration":
+elif menu == "📝 New Registration":
     app8.app(lang_toggle)
 
-elif selected_option == "📞 Contact":
+elif menu == "📞 Contact":
     # Contact page content
     st.markdown(f"<h2 style='color:black; font-weight:900;'>{t('Contact Us')}</h2>", unsafe_allow_html=True)
     
