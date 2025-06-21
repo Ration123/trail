@@ -23,7 +23,7 @@ t = get_translator(lang_toggle)
 
 # === Sidebar Option Menu ===
 with st.container():
-    st.markdown("### ☰ Tamil Nadu Ration Shop Portal")
+    st.markdown("### 🌾 Tamil Nadu Ration Shop Portal")
     menu = st.selectbox("Menu", [
         "🏠 Home",
         "📊 Stock Availability",
