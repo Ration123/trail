@@ -28,8 +28,26 @@ if not firebase_admin._apps:
 def app(lang_toggle):
     t = get_translator(lang_toggle)
     
-    ref = db.reference("/level")
-    level = ref.get()
+    ref = db.reference("/")  # Get all users
+    data = ref.get()
+
+# Initialize stock for each shop
+    shop_levels = {
+       "101": 0,
+       "102": 0,
+       "103": 0
+   }
+
+    for user_id, user_data in data.items():
+     shop = str(user_data.get("Shop"))
+     level = user_data.get("level")
+    
+     if shop in shop_levels and level is not None:
+        try:
+            shop_levels[shop] += int(level)
+        except ValueError:
+            pass  # Skip if level is not an integer
+
     st.title("📦Realtime stock monitoring")
     
     
@@ -47,10 +65,11 @@ def app(lang_toggle):
     
     # Dummy stock data
     stock_data = {
-        t("Shop 101 - Chennai"): {"Rice": level, "Sugar": 0, "Wheat": 0},
-        t("Shop 102 - Madurai"): {"Rice": 0, "Sugar": 0, "Wheat": 0},
-        t("Shop 103 - Coimbatore"): {"Rice": 0, "Sugar": 0, "Wheat": 0},
-    }
+    t("Shop 101 - Chennai"): {"Rice": shop_levels["101"], "Sugar": 0, "Wheat": 0},
+    t("Shop 102 - Madurai"): {"Rice": shop_levels["102"], "Sugar": 0, "Wheat": 0},
+    t("Shop 103 - Coimbatore"): {"Rice": shop_levels["103"], "Sugar": 0, "Wheat": 0},
+}
+
 
     if shop in stock_data:
         df = pd.DataFrame(stock_data[shop].items(), columns=[t("Item"), t("Quantity")])
