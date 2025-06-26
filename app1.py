@@ -42,7 +42,7 @@ def app(lang_toggle):
     try:
      level = int(level)
     except (ValueError, TypeError):
-     level = 300
+     level = 0
 
     
     # Dummy stock data
