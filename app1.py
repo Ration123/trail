@@ -39,6 +39,11 @@ def app(lang_toggle):
         t("Shop 102 - Madurai"), 
         t("Shop 103 - Coimbatore")
     ])
+    try:
+     level = int(level)
+    except (ValueError, TypeError):
+     level = 300
+
     
     # Dummy stock data
     stock_data = {
@@ -50,7 +55,11 @@ def app(lang_toggle):
     if shop in stock_data:
         df = pd.DataFrame(stock_data[shop].items(), columns=[t("Item"), t("Quantity")])
 
-        # === Bar Chart ===
+# Convert Item to string and Quantity to numeric to avoid matplotlib TypeError
+        df[t("Item")] = df[t("Item")].astype(str)
+        df[t("Quantity")] = pd.to_numeric(df[t("Quantity")], errors='coerce').fillna(0)
+
+# Bar chart
         fig, ax = plt.subplots()
         ax.bar(df[t("Item")], df[t("Quantity")], color=['orange', 'green', 'blue'])
 
